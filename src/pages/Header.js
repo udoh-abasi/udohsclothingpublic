@@ -5,6 +5,8 @@ import { FaSearch } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaWindowClose } from "react-icons/fa";
 import { useState } from "react";
+import { addOrRemoveClassToBody } from "@/util/addOrRemoveClassToBody";
+import { OverLayforBlurringScreen } from "@/util/OverLayforBluringScreen";
 
 export const Header = () => {
   const [mobileScreenMenu, setMobileScreenMenu] = useState(false);
@@ -14,10 +16,6 @@ export const Header = () => {
   );
   const mediumScreenAndAbove = useMatchMedia("(min-width:520px)");
   const largeScreen = useMatchMedia("(min-width:992px)");
-
-  const addOrRemoveClassToBody = () => {
-    document.querySelector("body").classList.toggle("menuOpen");
-  };
 
   return (
     <>
@@ -151,15 +149,11 @@ export const Header = () => {
             <>
               {mobileScreenMenu && (
                 <nav>
-                  <div
-                    onClick={() => {
-                      setMobileScreenMenu(false);
-                      addOrRemoveClassToBody();
-                    }}
-                    className={`mobileMenuOverlay fixed bg-white top-0 left-0 right-0 bottom-0 opacity-70 ${
-                      !mobileScreenMenu && "hidden"
-                    }`}
-                  ></div>
+                  <OverLayforBlurringScreen
+                    stateToLinkWithOverlay={mobileScreenMenu}
+                    setStateToLinkWithOverlay={setMobileScreenMenu}
+                  />
+
                   <ul className="absolute left-0 top-0 bg-white dark:bg-black w-[90%] p-5 text-sm h-[100vh] flex flex-col overflow-auto">
                     <li className=" border-2 rounded-2xl w-[90%]  mb-8">
                       <a href="#" className=" py-4 flex justify-center">
