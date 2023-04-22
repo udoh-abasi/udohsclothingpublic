@@ -6,7 +6,7 @@ import { Footer } from "./Footer";
 
 export default function Home() {
   return (
-    <main className="">
+    <main id="home" className="overflow-hidden">
       <Header />
       <HomeBody />
       <Footer />
