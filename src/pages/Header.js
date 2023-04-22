@@ -4,8 +4,10 @@ import { FaUser } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaWindowClose } from "react-icons/fa";
+import { useState } from "react";
 
 export const Header = () => {
+  const [mobileScreenMenu, setMobileScreenMenu] = useState(false);
   const mobileScreen = useMatchMedia("(max-width:519px)");
   const mediumScreenOnly = useMatchMedia(
     "(min-width:451px) and (max-width:991px)"
@@ -115,9 +117,14 @@ export const Header = () => {
 
         <header className="flex justify-between p-4 items-center text-3xl relative">
           <div className="flex items-center">
-            <a href="#" className="block pr-3 text-4xl ">
+            <button
+              className="block pr-3 text-4xl "
+              onClick={() => {
+                setMobileScreenMenu(true);
+              }}
+            >
               <GiHamburgerMenu />
-            </a>
+            </button>
             <h1
               className="pr-4 font-bold tracking-[-0.12em] text-4xl"
               id="logo"
@@ -126,25 +133,42 @@ export const Header = () => {
             </h1>
           </div>
 
-          <nav className="absolute">
-            {true && (
-              <ul>
-                <FaWindowClose />
-                <li>
-                  <a href="">SHOP MEN</a>
+          <nav className="">
+            {mobileScreenMenu && (
+              <ul className="absolute left-0 top-0 bg-white dark:bg-black w-[90%] p-5 text-2xl h-[100vh] flex flex-col justify-around ">
+                <li className=" border-4 rounded-xl">
+                  <a href="" className=" py-4 flex justify-center">
+                    SHOP MEN
+                  </a>
                 </li>
-                <li>
-                  <a href="">SHOP WOMEN</a>
+                <li className=" border-4 rounded-xl">
+                  <a href="" className=" py-4 flex justify-center">
+                    SHOP WOMEN
+                  </a>
                 </li>
-                <li>
-                  <a href="">SHOP CHILDREN</a>
+                <li className=" border-4 rounded-xl">
+                  <a href="" className=" py-4 flex justify-center">
+                    SHOP CHILDREN
+                  </a>
                 </li>
-                <li>
-                  <a href="">ABOUT US</a>
+                <li className=" border-4 rounded-xl">
+                  <a href="" className=" py-4 flex justify-center">
+                    ABOUT US
+                  </a>
                 </li>
-                <li>
-                  <a href="">CONTACT US</a>
+                <li className=" border-4 rounded-xl">
+                  <a href="" className=" py-4 flex justify-center">
+                    CONTACT US
+                  </a>
                 </li>
+                <button
+                  className=" absolute top-0 right-0 text-5xl"
+                  onClick={() => {
+                    setMobileScreenMenu(false);
+                  }}
+                >
+                  <FaWindowClose />
+                </button>
               </ul>
             )}
           </nav>
