@@ -23,3 +23,39 @@ body {
       rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
   max-width: 1800px;
 }
+
+#logo {
+  background-color: #f3ec78;
+  background-image: linear-gradient(45deg, #f3ec78, #af4261);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+
+/* clears the ‘X’ from Internet Explorer */
+input[type=search]::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+input[type=search]::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* clears the ‘X’ from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
+input[type=search] {
+  outline: 0;
+  padding: 7px;
+}
