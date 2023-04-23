@@ -1,18 +1,21 @@
-import { HomeMainCarousel } from "./Carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
 
-export const HomeBody = () => {
+export const HomeMainCarousel = () => {
   return (
-    <div className="">
-      <HomeMainCarousel />
-
-      <p>
-        This is <span>UDOHS</span>
-      </p>
-      <a>SHOP MEN</a>
-      <a>SHOP WOMAN</a>
-      <a>SHOP CHILDREN</a>
-
-      <figure>
+    <div>
+      <Carousel
+        autoPlay={true}
+        infiniteLoop={true}
+        showThumbs={false}
+        useKeyboardArrows={true}
+        animationHandler="fade"
+        swipeScrollTolerance={5}
+        transitionTime={1000}
+        showStatus={false}
+        interval={5000}
+        stopOnHover={false}
+      >
         <picture>
           <source srcSet="/Home_page1-Large.webp" media="(min-width:520px)" />
           <source
@@ -48,10 +51,7 @@ export const HomeBody = () => {
           />
           <img src="/Home_page4-Large.webp" alt="A happy family" />
         </picture>
-      </figure>
-
-      <p>EASY WORLDWIDE DELIVERY</p>
-      <p>UDOHS DESIGNS</p>
+      </Carousel>
     </div>
   );
 };

@@ -24,7 +24,7 @@ export const Header = () => {
 
       {mediumScreenAndAbove ? (
         <header
-          className=" fixed left-0 right-0 bg-white dark:bg-black"
+          className="left-0 right-0 bg-white dark:bg-black"
           id="headerWrapper"
         >
           <div className="p-7">
@@ -125,7 +125,7 @@ export const Header = () => {
       ) : (
         // {/* NOTE: FOR SMALLER SCREENS */}
         <header
-          className="fixed left-0 right-0 bg-white dark:bg-black"
+          className="left-0 right-0 bg-white dark:bg-black"
           id="headerWrapper"
         >
           <div className="flex justify-between p-4 items-center text-3xl relative">
