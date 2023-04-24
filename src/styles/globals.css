@@ -147,14 +147,3 @@ footer {
   position: fixed !important;
   opacity: 0.3 !important;
 }
-
-.theGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 30px;
-  justify-items: center;
-}
-
-.theGrid>* {
-  max-width: 250px;
-}
