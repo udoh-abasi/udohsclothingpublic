@@ -125,7 +125,7 @@ export const Header = () => {
       ) : (
         // {/* NOTE: FOR SMALLER SCREENS */}
         <header
-          className="left-0 right-0 bg-white dark:bg-black"
+          className="bg-white dark:bg-black relative z-10"
           id="headerWrapper"
         >
           <div className="flex justify-between p-4 items-center text-3xl relative">
@@ -157,27 +157,27 @@ export const Header = () => {
 
                   <ul className="absolute left-0 top-0 bg-white dark:bg-black w-[90%] p-5 text-sm h-[100vh] flex flex-col overflow-auto">
                     <li className=" border-2 rounded-2xl w-[90%]  mb-8">
-                      <a href="#" className=" py-4 flex justify-center">
+                      <a href="#_" className=" py-4 flex justify-center">
                         SHOP MEN
                       </a>
                     </li>
                     <li className=" border-2 rounded-2xl w-[90%] mb-8">
-                      <a href="" className=" py-4 flex justify-center">
+                      <a href="#_" className=" py-4 flex justify-center">
                         SHOP WOMEN
                       </a>
                     </li>
                     <li className=" border-2 rounded-2xl w-[90%] mb-8">
-                      <a href="" className=" py-4 flex justify-center">
+                      <a href="#_" className=" py-4 flex justify-center">
                         SHOP CHILDREN
                       </a>
                     </li>
                     <li className=" border-2 rounded-2xl w-[90%] mb-8">
-                      <a href="" className=" py-4 flex justify-center">
+                      <a href="#_" className=" py-4 flex justify-center">
                         ABOUT US
                       </a>
                     </li>
                     <li className=" border-2 rounded-2xl w-[90%] mb-8">
-                      <a href="" className=" py-4 flex justify-center">
+                      <a href="#_" className=" py-4 flex justify-center">
                         CONTACT US
                       </a>
                     </li>
@@ -205,7 +205,7 @@ export const Header = () => {
                 </a>
               </li>
               <li>
-                <a href="" className="block py-3">
+                <a href="#_" className="block py-3">
                   <FaUser />
                 </a>
               </li>

@@ -13,7 +13,7 @@ export const HomeMainCarousel = () => {
         swipeScrollTolerance={5}
         showStatus={false}
         interval={5000}
-        stopOnHover={false}
+        stopOnHover={true}
       >
         <div className="grid">
           <picture className="row-start-1 col-start-1">
@@ -29,7 +29,7 @@ export const HomeMainCarousel = () => {
             className="flex justify-center items-center flex-col row-start-1 col-start-1 self-end mb-10"
             id="Carousel"
           >
-            <p className="text-4xl font-bold mb-5">This is UDOHS</p>
+            <p className="text-4xl font-bold mb-5 ">This is UDOHS</p>
 
             <div
               id="CarouselButtons"

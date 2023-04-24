@@ -1,15 +1,19 @@
 export const Footer = () => {
   return (
-    <footer>
-      <p>
-        This is a fictitious company created by Udoh Abasi, solely for training.
-        Any resemblance to real products or services is purely coincidental.
-      </p>
-      <p>
-        Information provided about the products or services is also fictitious
-        and should not be construed as representative of actual products or
-        services on the market in a similar product or service category.
-      </p>
-    </footer>
+    <>
+      <hr className="bg-black h-[7px] dark:bg-white mb-6" />
+      <footer className="p-7 text-justify font-bold flex flex-col items-center">
+        <p className="mb-5 max-w-[700px]">
+          This is a fictitious company created by Udoh Abasi, solely for
+          training. Any resemblance to real products or services is purely
+          coincidental.
+        </p>
+        <p className="mb-5 max-w-[700px]">
+          Information provided about the products or services is also fictitious
+          and should not be construed as representative of actual products or
+          services on the market in a similar product or service category.
+        </p>
+      </footer>
+    </>
   );
 };
