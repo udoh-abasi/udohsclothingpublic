@@ -6,12 +6,13 @@ export const OverLayforBlurringScreen = ({
 }) => {
   return (
     <div
+      id="overLay"
       onClick={() => {
         setStateToLinkWithOverlay(false);
         addOrRemoveClassToBody();
       }}
-      className={`fixed bg-white top-0 left-0 right-0 bottom-0 opacity-70 z-[100] ${
-        !stateToLinkWithOverlay && "hidden"
+      className={`bg-white top-0 left-0 right-0 bottom-0 ${
+        !stateToLinkWithOverlay ? "hidden" : ""
       }`}
     ></div>
   );

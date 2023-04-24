@@ -142,3 +142,8 @@ footer {
   background-size: cover;
   background-position: center;
 }
+
+#overLay {
+  position: fixed !important;
+  opacity: 0.3 !important;
+}

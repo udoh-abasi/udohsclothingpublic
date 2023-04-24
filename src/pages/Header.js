@@ -155,7 +155,7 @@ export const Header = () => {
                     setStateToLinkWithOverlay={setMobileScreenMenu}
                   />
 
-                  <ul className="absolute left-0 top-0 bg-white dark:bg-black w-[90%] p-5 text-sm h-[100vh] flex flex-col overflow-auto">
+                  <ul className="fixed left-0 top-0 bg-white dark:bg-black w-[90%] p-5 text-sm h-[100vh] flex flex-col overflow-auto">
                     <li className=" border-2 rounded-2xl w-[90%]  mb-8">
                       <a href="#_" className=" py-4 flex justify-center">
                         SHOP MEN
