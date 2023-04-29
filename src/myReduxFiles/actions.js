@@ -1,5 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
 
-export const theCardAction = createAction("INITIALCARD", (data) => {
+export const cartAction = createAction("cartAction", (data) => {
   return { payload: data };
 });
