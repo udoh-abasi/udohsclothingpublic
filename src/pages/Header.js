@@ -4,20 +4,27 @@ import { FaUser } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaWindowClose } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addOrRemoveClassToBody } from "@/util/addOrRemoveClassToBody";
 import { OverLayforBlurringScreen } from "@/util/OverLayforBluringScreen";
 import Link from "next/link";
+import { cartSelector } from "@/myReduxFiles/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { cartAction } from "@/myReduxFiles/actions";
 
 export const Header = () => {
   const [mobileScreenMenu, setMobileScreenMenu] = useState(false);
 
-  const mobileScreen = useMatchMedia("(max-width:519px)");
-  const mediumScreenOnly = useMatchMedia(
-    "(min-width:451px) and (max-width:991px)"
-  );
   const mediumScreenAndAbove = useMatchMedia("(min-width:520px)");
-  const largeScreen = useMatchMedia("(min-width:992px)");
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const retrievedCart = JSON.parse(localStorage.getItem("myCart")) || [];
+    dispatch(cartAction(retrievedCart));
+  }, []);
+
+  const noOfItemsInCart = useSelector(cartSelector);
 
   return (
     <>
@@ -73,7 +80,10 @@ export const Header = () => {
                     </li>
                   </div>
 
-                  <li className="px-4 group">
+                  <li className="px-4 group relative">
+                    <span className="absolute text-base bottom-6 left-8 bg-green-500 rounded-full w-6 h-6 text-center flex items-center justify-center">
+                      {noOfItemsInCart.length}
+                    </span>
                     <button>
                       <AiOutlineShoppingCart className="group-hover:text-[#e2cc50]" />
                     </button>
@@ -261,7 +271,10 @@ export const Header = () => {
               <button type="button" className="block py-3">
                 <FaSearch />
               </button>
-              <li className="">
+              <li className="relative">
+                <span className="absolute text-base bottom-6 left-8 bg-green-500 rounded-full w-6 h-6 text-center flex items-center justify-center">
+                  {noOfItemsInCart.length}
+                </span>
                 <button href="#" className="block p-3">
                   <AiOutlineShoppingCart />
                 </button>

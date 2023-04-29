@@ -6,6 +6,9 @@ import { useDetectScroll } from "@smakss/react-scroll-direction";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { cartSelector } from "@/myReduxFiles/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { cartAction } from "@/myReduxFiles/actions";
 
 export const ProductPage = () => {
   const [singleCloth, setsingleCloth] = useState("");
@@ -80,6 +83,42 @@ export const ProductPage = () => {
     };
   }, []);
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const retrievedCart = JSON.parse(localStorage.getItem("myCart")) || [];
+    dispatch(cartAction(retrievedCart));
+  }, []);
+
+  const currentCartInRedux = useSelector(cartSelector);
+
+  const addItemToCart = (cloth) => {
+    if (
+      quantityToPurchase &&
+      Number(quantityToPurchase) > 0 &&
+      Number(quantityToPurchase) < 51
+    ) {
+      const noOfItemsNeeded = Number(quantityToPurchase);
+      const newClothArray = [];
+      for (let index = 0; index < noOfItemsNeeded; index++) {
+        newClothArray.push(cloth);
+      }
+
+      const theCart = JSON.parse(localStorage.getItem("myCart")) || [];
+      localStorage.setItem(
+        "myCart",
+        JSON.stringify([...theCart, ...newClothArray])
+      );
+
+      dispatch(cartAction([...currentCartInRedux, ...newClothArray]));
+
+      setShowItemAddedToCart(true);
+      setTimeout(() => {
+        setShowItemAddedToCart(false);
+      }, 5000);
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   } else if (error) {
@@ -106,7 +145,11 @@ export const ProductPage = () => {
               {singleCloth.price}
             </p>
 
-            <p className="flex">
+            <form
+              className="flex"
+              onSubmit={(e) => e.preventDefault()}
+              id="numberToPurchaseForm"
+            >
               <button
                 type="button"
                 className="p-4 bg-[#af4261] rounded-2xl"
@@ -140,16 +183,15 @@ export const ProductPage = () => {
               >
                 <FaPlus />
               </button>
-            </p>
+            </form>
             <button
-              type="button"
-              className="p-4 bg-green-500 w-[100%] mt-8 rounded-xl uppercase font-bold"
-              onClick={() => {
-                setShowItemAddedToCart(true);
-                setTimeout(() => {
-                  setShowItemAddedToCart(false);
-                }, 5000);
-              }}
+              form="numberToPurchaseForm"
+              type="submit"
+              disabled={!quantityToPurchase}
+              className={`p-4 w-[100%] mt-8 rounded-xl uppercase font-bold disabled:text-gray-400 disabled:cursor-not-allowed ${
+                showItemAddedToCart ? " bg-[#af4261]" : "bg-green-500"
+              }`}
+              onClick={() => addItemToCart(singleCloth)}
             >
               {showItemAddedToCart ? (
                 <span className="flex items-center justify-center">

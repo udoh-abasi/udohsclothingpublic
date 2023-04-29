@@ -1,1 +1,1 @@
-export const cardDataSelector = (state) => state.cardData.cards;
+export const cartSelector = (state) => state.cartData;

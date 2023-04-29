@@ -1,11 +1,12 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { theCardAction } from "./actions";
+import { cartAction } from "./actions";
 
-const initialState = { cards: [] };
+// const initialState = localStorage.getItem("myCart") || [];
+const initialState = [];
 
-export const cardData = createReducer(initialState, (builder) => {
-  builder.addCase(theCardAction, (state, action) => {
+export const cartReducer = createReducer(initialState, (builder) => {
+  builder.addCase(cartAction, (state, action) => {
     const { payload } = action;
-    return { cards: payload };
+    return payload;
   });
 });

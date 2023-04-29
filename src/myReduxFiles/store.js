@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { cardData } from "./reducers";
+import { cartReducer } from "./reducers";
 
 export const store = configureStore({
-  reducer: { cardData },
+  reducer: { cartData: cartReducer },
 });
