@@ -155,5 +155,12 @@ footer {
 
 #overLay {
   position: fixed !important;
-  opacity: 0.3 !important;
+  opacity: 0.2 !important;
+}
+
+
+/*Animate the shopping cart and mobile's menu bar to slide in and out of view*/
+
+#shopping-cart {
+  transition: transform 0.5s linear;
 }

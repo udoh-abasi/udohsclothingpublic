@@ -68,6 +68,11 @@ export const ProductPage = () => {
 
   const [quantityToPurchase, setQuantityToPurchase] = useState(1);
 
+  // This resets the quantityToPurchase Field, when the user clicks on a new cloth
+  useEffect(() => {
+    setQuantityToPurchase(1);
+  }, [singleCloth]);
+
   const [scrollDir] = useDetectScroll({});
   const [currentScrollPosition, setCurrentScrollPosition] = useState(0);
 
@@ -138,7 +143,7 @@ export const ProductPage = () => {
           </picture>
 
           <figcaption className="p-4 min-[571px]:p-8">
-            <p className="text-xl min-[571px]:text-2xl min-[710px]:mt-8">
+            <p className="text-xl min-[571px]:text-2xl min-[710px]:mt-8 min-[710px]:max-w-[500px]">
               {singleCloth.name}
             </p>
             <p className="pb-6 pt-3 text-2xl min-[571px]:text-3xl font-bold text-[#af4261] dark:text-[#f3ec78] min-[710px]:my-8">
@@ -163,10 +168,15 @@ export const ProductPage = () => {
 
               <input
                 onChange={(e) => {
-                  setQuantityToPurchase(e.target.value);
+                  if (e.target.value === "0") {
+                    setQuantityToPurchase(1);
+                  } else {
+                    setQuantityToPurchase(e.target.value);
+                  }
                 }}
                 type="number"
                 value={quantityToPurchase}
+                required
                 max="50"
                 min="1"
                 aria-label="Enter the number you want to purchase"

@@ -6,14 +6,19 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { FaWindowClose } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { addOrRemoveClassToBody } from "@/util/addOrRemoveClassToBody";
-import { OverLayforBlurringScreen } from "@/util/OverLayforBluringScreen";
+import {
+  CartOverLayforBlurringScreen,
+  OverLayforBlurringScreen,
+} from "@/util/OverLayforBluringScreen";
 import Link from "next/link";
 import { cartSelector } from "@/myReduxFiles/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { cartAction } from "@/myReduxFiles/actions";
+import { Cart } from "./cart";
 
 export const Header = () => {
   const [mobileScreenMenu, setMobileScreenMenu] = useState(false);
+  const [overLayForCart, setOverLayForCart] = useState(false);
 
   const mediumScreenAndAbove = useMatchMedia("(min-width:520px)");
 
@@ -192,7 +197,7 @@ export const Header = () => {
                     setStateToLinkWithOverlay={setMobileScreenMenu}
                   />
 
-                  <ul className="fixed left-0 top-0 bg-white dark:bg-black w-[90%] p-5 text-sm h-[100vh] flex flex-col overflow-auto">
+                  <ul className="fixed left-0 top-0 bg-white dark:bg-black w-[90%] p-5 text-sm h-[100vh] flex flex-col overflow-auto z-10">
                     <li className=" border-2 rounded-2xl w-[90%]  mb-8">
                       <Link
                         href="/ProductDisplayPage/men"
@@ -267,20 +272,58 @@ export const Header = () => {
               )}
             </>
 
+            {overLayForCart && (
+              <div
+                onClick={() => {
+                  const theCart = document.querySelector("#shopping-cart");
+                  theCart.classList.toggle("translate-x-[300%]");
+                  theCart.classList.toggle("translate-x-[0%]");
+
+                  setTimeout(() => {
+                    theCart.classList.toggle("hidden");
+                  }, 1000);
+                }}
+              >
+                <OverLayforBlurringScreen
+                  stateToLinkWithOverlay={overLayForCart}
+                  setStateToLinkWithOverlay={setOverLayForCart}
+                />
+              </div>
+            )}
+
             <ul className="flex items-center">
               <button type="button" className="block py-3">
                 <FaSearch />
               </button>
               <li className="relative">
-                <span className="absolute text-base bottom-6 left-8 bg-green-500 rounded-full w-6 h-6 text-center flex items-center justify-center">
+                <span className="absolute text-base bottom-6 left-8 bg-green-500 rounded-full w-6 h-6 text-center flex items-center justify-center z-[1] pointer-events-none">
                   {noOfItemsInCart.length}
                 </span>
-                <button href="#" className="block p-3">
+
+                <button
+                  className="block p-3 relative"
+                  onClick={() => {
+                    const theCart = document.querySelector("#shopping-cart");
+                    theCart.classList.toggle("hidden");
+
+                    setTimeout(() => {
+                      theCart.classList.toggle("translate-x-[300%]");
+                      theCart.classList.toggle("translate-x-[0%]");
+                    }, 0.005);
+
+                    setTimeout(() => {
+                      setOverLayForCart(true);
+                      addOrRemoveClassToBody();
+                    }, 500);
+                  }}
+                >
                   <AiOutlineShoppingCart />
                 </button>
+
+                <Cart setOverLayForCart={setOverLayForCart} />
               </li>
               <li>
-                <button href="#_" className="block py-3">
+                <button className="block py-3">
                   <FaUser />
                 </button>
               </li>
