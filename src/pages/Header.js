@@ -6,10 +6,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { FaWindowClose } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { addOrRemoveClassToBody } from "@/util/addOrRemoveClassToBody";
-import {
-  CartOverLayforBlurringScreen,
-  OverLayforBlurringScreen,
-} from "@/util/OverLayforBluringScreen";
+import { OverLayforBlurringScreen } from "@/util/OverLayforBluringScreen";
 import Link from "next/link";
 import { cartSelector } from "@/myReduxFiles/selectors";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +16,8 @@ import { Cart } from "./cart";
 export const Header = () => {
   const [mobileScreenMenu, setMobileScreenMenu] = useState(false);
   const [overLayForCart, setOverLayForCart] = useState(false);
+  const [overLayForCartOnBigScreen, setOverLayForCartOnBigScreen] =
+    useState(false);
 
   const mediumScreenAndAbove = useMatchMedia("(min-width:520px)");
 
@@ -30,6 +29,26 @@ export const Header = () => {
   }, []);
 
   const noOfItemsInCart = useSelector(cartSelector);
+
+  // This useEffect Listens to when either the mobile's <nav> or the desktop's <nav> is returned, then it executes.
+  // It uses the 'useMatchMedia' useEffect above, to know when to execute
+
+  useEffect(() => {
+    const listenToWhenNewNavIsReturned = () => {
+      setOverLayForCart(false);
+      setOverLayForCartOnBigScreen(false);
+
+      const theCart = document.querySelector("#shopping-cart");
+      theCart.classList.add("hidden");
+
+      theCart.classList.add("translate-x-[300%]");
+      theCart.classList.remove("translate-x-[0%]");
+
+      document.querySelector("body").classList.remove("menuOpen");
+    };
+
+    listenToWhenNewNavIsReturned();
+  }, [mediumScreenAndAbove]);
 
   return (
     <>
@@ -89,10 +108,57 @@ export const Header = () => {
                     <span className="absolute text-base bottom-6 left-8 bg-green-500 rounded-full w-6 h-6 text-center flex items-center justify-center">
                       {noOfItemsInCart.length}
                     </span>
-                    <button>
-                      <AiOutlineShoppingCart className="group-hover:text-[#e2cc50]" />
+
+                    {overLayForCartOnBigScreen && (
+                      <div
+                        className="relative z-[3]"
+                        onClick={() => {
+                          const theCart =
+                            document.querySelector("#shopping-cart");
+
+                          theCart.classList.toggle("translate-x-[300%]");
+                          theCart.classList.toggle("translate-x-[0%]");
+
+                          setTimeout(() => {
+                            theCart.classList.toggle("hidden");
+                          }, 1000);
+                        }}
+                      >
+                        <OverLayforBlurringScreen
+                          stateToLinkWithOverlay={overLayForCartOnBigScreen}
+                          setStateToLinkWithOverlay={
+                            setOverLayForCartOnBigScreen
+                          }
+                        />
+                      </div>
+                    )}
+
+                    <button
+                      className="relative group-hover:text-[#e2cc50]"
+                      onClick={() => {
+                        const theCart =
+                          document.querySelector("#shopping-cart");
+                        theCart.classList.toggle("hidden");
+
+                        setTimeout(() => {
+                          theCart.classList.toggle("translate-x-[300%]");
+                          theCart.classList.toggle("translate-x-[0%]");
+                        }, 0.005);
+
+                        setTimeout(() => {
+                          setOverLayForCartOnBigScreen(true);
+                          addOrRemoveClassToBody();
+                        }, 500);
+                      }}
+                    >
+                      <AiOutlineShoppingCart />
                     </button>
                   </li>
+                  <Cart
+                    setOverLayForCart={setOverLayForCart}
+                    setOverLayForCartOnBigScreen={setOverLayForCartOnBigScreen}
+                  />
+
                   <li className="px-4 group">
                     <button>
                       <FaUser className="group-hover:text-[#e2cc50]" />
@@ -272,34 +338,34 @@ export const Header = () => {
               )}
             </>
 
-            {overLayForCart && (
-              <div
-                onClick={() => {
-                  const theCart = document.querySelector("#shopping-cart");
-                  theCart.classList.toggle("translate-x-[300%]");
-                  theCart.classList.toggle("translate-x-[0%]");
-
-                  setTimeout(() => {
-                    theCart.classList.toggle("hidden");
-                  }, 1000);
-                }}
-              >
-                <OverLayforBlurringScreen
-                  stateToLinkWithOverlay={overLayForCart}
-                  setStateToLinkWithOverlay={setOverLayForCart}
-                />
-              </div>
-            )}
-
             <ul className="flex items-center">
               <button type="button" className="block py-3">
                 <FaSearch />
               </button>
+
               <li className="relative">
                 <span className="absolute text-base bottom-6 left-8 bg-green-500 rounded-full w-6 h-6 text-center flex items-center justify-center z-[1] pointer-events-none">
                   {noOfItemsInCart.length}
                 </span>
 
+                {overLayForCart && (
+                  <div
+                    onClick={() => {
+                      const theCart = document.querySelector("#shopping-cart");
+                      theCart.classList.toggle("translate-x-[300%]");
+                      theCart.classList.toggle("translate-x-[0%]");
+
+                      setTimeout(() => {
+                        theCart.classList.toggle("hidden");
+                      }, 1000);
+                    }}
+                  >
+                    <OverLayforBlurringScreen
+                      stateToLinkWithOverlay={overLayForCart}
+                      setStateToLinkWithOverlay={setOverLayForCart}
+                    />
+                  </div>
+                )}
                 <button
                   className="block p-3 relative"
                   onClick={() => {
@@ -320,7 +386,10 @@ export const Header = () => {
                   <AiOutlineShoppingCart />
                 </button>
 
-                <Cart setOverLayForCart={setOverLayForCart} />
+                <Cart
+                  setOverLayForCart={setOverLayForCart}
+                  setOverLayForCartOnBigScreen={setOverLayForCartOnBigScreen}
+                />
               </li>
               <li>
                 <button className="block py-3">

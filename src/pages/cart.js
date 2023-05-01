@@ -8,14 +8,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { addOrRemoveClassToBody } from "@/util/addOrRemoveClassToBody";
 
-export const Cart = ({ setOverLayForCart }) => {
+export const Cart = ({ setOverLayForCart, setOverLayForCartOnBigScreen }) => {
   const currentCartInRedux = useSelector(cartSelector);
   const [quantityToPurchase, setQuantityToPurchase] = useState(1);
 
   return (
     <section
       id="shopping-cart"
-      className="fixed top-1 right-1 bg-white dark:bg-black w-[85vw] h-[100vh] overflow-auto z-[2] translate-x-[300%] hidden"
+      className="fixed top-1 right-1 min-[520px]:z-[3] bg-white dark:bg-black w-[85vw] h-[100vh] overflow-auto z-[2] translate-x-[300%] hidden"
     >
       <h3 className="text-xl text-center mt-5  font-bold">
         Shopping Cart ({currentCartInRedux.length})
@@ -124,6 +124,7 @@ export const Cart = ({ setOverLayForCart }) => {
           theCart.classList.toggle("translate-x-[0%]");
 
           setOverLayForCart(false);
+          setOverLayForCartOnBigScreen(false);
           addOrRemoveClassToBody();
 
           setTimeout(() => {
