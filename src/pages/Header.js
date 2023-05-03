@@ -12,6 +12,7 @@ import { cartSelector } from "@/myReduxFiles/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { cartAction } from "@/myReduxFiles/actions";
 import { Cart } from "./cart";
+import { getNumberOfEachItemInCart } from "@/util/getNumberOfEachItemInCart";
 
 export const Header = () => {
   const [mobileScreenMenu, setMobileScreenMenu] = useState(false);
@@ -19,34 +20,42 @@ export const Header = () => {
   const [overLayForCartOnBigScreen, setOverLayForCartOnBigScreen] =
     useState(false);
 
+  const [numberOfEachItemInCart, setNumberOfEachItemInCart] = useState(null);
+
   const mediumScreenAndAbove = useMatchMedia("(min-width:520px)");
 
   const dispatch = useDispatch();
 
+  const itemsInCart = useSelector(cartSelector);
+
   useEffect(() => {
     const retrievedCart = JSON.parse(localStorage.getItem("myCart")) || [];
     dispatch(cartAction(retrievedCart));
-  }, []);
-
-  const noOfItemsInCart = useSelector(cartSelector);
-
-  // This useEffect Listens to when either the mobile's <nav> or the desktop's <nav> is returned, then it executes.
-  // It uses the 'useMatchMedia' useEffect above, to know when to execute
+  }, [dispatch]);
 
   useEffect(() => {
-    const listenToWhenNewNavIsReturned = () => {
-      setOverLayForCart(false);
-      setOverLayForCartOnBigScreen(false);
+    const result = getNumberOfEachItemInCart(itemsInCart);
+    setNumberOfEachItemInCart(result);
+  }, [itemsInCart]);
 
-      const theCart = document.querySelector("#shopping-cart");
-      theCart.classList.add("hidden");
+  // This useEffect below Listens to when either the mobile's <nav> or the desktop's <nav> is returned, then it executes.
+  // It uses the 'useMatchMedia' useEffect above, to know when to execute
+  // I used it to fix the issue of the cart's overlay still displaying, when you switch from either mobile's <nav> to desktop's <nav> or the other way round
 
-      theCart.classList.add("translate-x-[300%]");
-      theCart.classList.remove("translate-x-[0%]");
+  const listenToWhenNewNavIsReturned = () => {
+    setOverLayForCart(false);
+    setOverLayForCartOnBigScreen(false);
 
-      document.querySelector("body").classList.remove("menuOpen");
-    };
+    const theCart = document.querySelector("#shopping-cart");
+    theCart.classList.add("hidden");
 
+    theCart.classList.add("translate-x-[300%]");
+    theCart.classList.remove("translate-x-[0%]");
+
+    document.querySelector("body").classList.remove("menuOpen");
+  };
+
+  useEffect(() => {
     listenToWhenNewNavIsReturned();
   }, [mediumScreenAndAbove]);
 
@@ -105,8 +114,8 @@ export const Header = () => {
                   </div>
 
                   <li className="px-4 group relative">
-                    <span className="absolute text-base bottom-6 left-8 bg-green-500 rounded-full w-6 h-6 text-center flex items-center justify-center">
-                      {noOfItemsInCart.length}
+                    <span className="absolute text-base bottom-6 left-8 bg-green-500 rounded-full w-6 h-6 text-center flex items-center justify-center z-[1] pointer-events-none">
+                      {itemsInCart.length}
                     </span>
 
                     {overLayForCartOnBigScreen && (
@@ -135,6 +144,7 @@ export const Header = () => {
 
                     <button
                       className="relative group-hover:text-[#e2cc50]"
+                      id="CartButton"
                       onClick={() => {
                         const theCart =
                           document.querySelector("#shopping-cart");
@@ -157,6 +167,7 @@ export const Header = () => {
                   <Cart
                     setOverLayForCart={setOverLayForCart}
                     setOverLayForCartOnBigScreen={setOverLayForCartOnBigScreen}
+                    numberOfEachItemInCart={numberOfEachItemInCart}
                   />
 
                   <li className="px-4 group">
@@ -345,7 +356,7 @@ export const Header = () => {
 
               <li className="relative">
                 <span className="absolute text-base bottom-6 left-8 bg-green-500 rounded-full w-6 h-6 text-center flex items-center justify-center z-[1] pointer-events-none">
-                  {noOfItemsInCart.length}
+                  {itemsInCart.length}
                 </span>
 
                 {overLayForCart && (
@@ -368,6 +379,7 @@ export const Header = () => {
                 )}
                 <button
                   className="block p-3 relative"
+                  id="CartButton"
                   onClick={() => {
                     const theCart = document.querySelector("#shopping-cart");
                     theCart.classList.toggle("hidden");
@@ -389,6 +401,7 @@ export const Header = () => {
                 <Cart
                   setOverLayForCart={setOverLayForCart}
                   setOverLayForCartOnBigScreen={setOverLayForCartOnBigScreen}
+                  numberOfEachItemInCart={numberOfEachItemInCart}
                 />
               </li>
               <li>

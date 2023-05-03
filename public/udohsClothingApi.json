@@ -2,6 +2,7 @@
   "children": [
     {
       "id": "children 1",
+      "category": "children",
       "name": "The Children's Place Girls Basic Super skinny Jean- Blue",
       "description": {
         "style": "Causual yet refined basic super skinny jeans for kid, which  feature slant pockets, a zip fly, and visible stitching, made from a durable demin material with a classic blue color.The Denim jacket is created with clean cotton fibres combined into long strings, which are woven tightly together with an industrial machine. The key denim fabric properties — durability and thickness — come from the strength of these twists of yarn",
@@ -20,6 +21,7 @@
 
     {
       "id": "Children 2",
+      "category": "children",
       "name": "Autumn Spring Kids Knitted Sweater Casual Long Sleeve Boys Cardigan",
       "description": {
         "style": "The Autumn spring kid Knitted cardigan is a Simple Sweater  knitted seamlessly in the round from the top down. It begin from the neck, and work the yoke with raglan increases. Sleeve stitches are then put on hold, and the body is completed.",
@@ -40,6 +42,7 @@
 
     {
       "id": "Children 3",
+      "category": "children",
       "name": "Summer Children's Sun Protective Coat Boys and Girls",
       "description": {
         "style": " Children outer garment for the upper body as worn by either gender for warmth or fashion,it have long sleeves and are open down the front and closing by means of a belt.",
@@ -61,6 +64,7 @@
 
     {
       "id": "Children 4",
+      "category": "children",
       "name": "Children Round Neck Polo Grey",
       "description": {
         "style": "This classic crew neck patterned polo is made with high quality cotton that would last for years and give you a comfortable feel with double stiche at the bottom and hems for added durablity",
@@ -80,6 +84,7 @@
 
     {
       "id": "Children 5",
+      "category": "children",
       "name": "New Hot Spring Baby Girls Clothing Set Demin Overall and Patterned Shirt",
       "description": {
         "style": "Every girl's wardrobe should have at least one denim overall dress! This model is perfect: adjustable straps, a pocket in front, faded yokes that are buttoned on the sides and a style that's easy to coordinate, it comes with a 100% cotton patterned inner that gives a comfortable feel.",
@@ -101,6 +106,7 @@
 
     {
       "id": "Children 6",
+      "category": "children",
       "name": "Baby Girls Clothing Set Oversized Overall and Floral shirt",
       "description": {
         "style": "Every girl's wardrobe should have at least one denim overall dress! This model is perfect: adjustable straps, a pocket in front, faded yokes that are buttoned on the sides and a style that's easy to coordinate",
@@ -119,6 +125,7 @@
 
     {
       "id": "Children 7",
+      "category": "children",
       "name": "2 Piece Set Girls Outing Wears Regular Fit Long Sleeve Shirt and Palazzo Pant",
       "description": {
         "style": "Long unisex pants cut with a loose, extremely wide leg that flares out from the waist, it is made from very soft light  materials the botton is double needle stiche for added durability, it is paired with a plain 100% cotton long sleeve shirt, which gives it an elegant look and comfortable feel.",
@@ -140,6 +147,7 @@
 
     {
       "id": "Children 8",
+      "category": "children",
       "name": "Boy's Jean Casual Pockets Demin Overalls Oversized Jean",
       "description": {
         "style": "Every boy's wardrobe should have at least one denim overall dress! This model is perfect: adjustable straps, a pocket in front, faded yokes that are buttoned on the sides and a style that's easy to coordinate",
@@ -158,6 +166,7 @@
 
     {
       "id": "Children 9",
+      "category": "children",
       "name": "Unisex Plain Round Neck Polo T-Shirt (white)",
       "description": {
         "style": "This classic white crew neck  is made with high quality cotton that would last for years and give you a comfortable feel with double stiche at the bottom and hems for added durablity",
@@ -178,6 +187,7 @@
 
     {
       "id": "Children 10",
+      "category": "children",
       "name": "Designer Thick Solid Color Cardigan For Babys ",
       "description": {
         "style": "Handmade unique children's appliqué cardigans for boys and girls. Made with luxury, soft alpaca fibres, perfect for babies and young children. It keeps them warm while fitting easily into any child's outfit",
@@ -198,6 +208,7 @@
 
     {
       "id": "children  11",
+      "category": "children",
       "name": "Children's Summer Beach Pants",
       "description": {
         "style": "These  Pants are suitable for the birthday party, casual, playground, school, backyard outdoor activities or at home. Stylish pants can match both a plain and patterned top  ",
@@ -218,6 +229,7 @@
 
     {
       "id": "Children 12",
+      "category": "children",
       "name": "Girl's Wide Leg Denim Trousers - White",
       "description": {
         "style": "The girl's wide leg denmin trouser is created with clean cotton fibres combined into long string, which are woven tightly together with industrial machine it is very durable and has additional thickness very suitable for outdoors. ",
@@ -239,6 +251,7 @@
 
     {
       "id": "Children 13",
+      "category": "children",
       "name": "Christmas Children Pullover Knit Bottoming Shirt",
       "description": {
         "style": "0-5Years Children Boy's Chirstmas Sweater Long Sleeve Cartoon Knitted Cardigan Top Toddler Kids Knitwear Jumper Fall Winter Clothes. It keeps them warm while fitting easily into any child's outfit. The effect left by a kids cardigan depends essentially on what it is worn on ",
@@ -259,6 +272,7 @@
 
     {
       "id": "Children 14",
+      "category": "children",
       "name": "Children's Halloween Costume",
       "description": {
         "style": "Popular costumes for kids include Spiderman, Glow-in-the-dark Skeleton, Witches, Disney Zombies, Harley Quin, Fairies, and Ninjas. How do I make my kids'  ",
@@ -275,6 +289,7 @@
 
     {
       "id": " Children 15",
+      "category": "children",
       "name": "Baby Girl's Birthday Party Dress with Lace (white)",
       "description": {
         "style": "Baby girl lace dress, the dress is made of fine lace ivory chantilly,High quality dress short sleeve dress .Detailed floral lace cover the whole dress .Satin weave inner layer •Soft cotton underskirt, concealed ack zip. Perfect fot parties ",
@@ -295,6 +310,7 @@
 
     {
       "id": "Children 16",
+      "category": "children",
       "name": "Baby Girl's knitted Fitted Turtle Neck Long sleeve Pullover - White",
       "description": {
         "style": "Also known as a polo neck, a turtleneck is a garment with a high neckline that folds over. The turtleneck collar sits close around the neck with a snug fit. Turtlenecks come in different styles, including sweaters and long sleeve shirts, and also come in a variety of materials, such as cashmere, wool, and cotton.",
@@ -314,6 +330,7 @@
 
     {
       "id": "Children 17",
+      "category": "children",
       "name": "Girl's Round Neck Top And Matching Stylish Girls Pants Joggers",
       "description": {
         "style": "This classic white crew neck  is made with high quality cotton that would last for years and give you a comfortable feel with double stiche at the bottom and hems for added durablity, its is paired with a matching jogger pants, suitable for ",
@@ -333,6 +350,7 @@
 
     {
       "id": "Children 18",
+      "category": "children",
       "name": "Girls Satin Patterned White Gown",
       "description": {
         "style": " This Satin patterned dress is wrinkle resistant,with high-quality, vibrant colours and images this creates the perfect combination of a soft, luxurious look and feel and a vibrant pattern printed on to the surface.",
@@ -353,6 +371,7 @@
 
     {
       "id": "Children 19",
+      "category": "children",
       "name": "Autumn and Winter Children's Down Jacket Warm Coat- White",
       "description": {
         "style": "Children down leather winter over coat jacket extra thick,long sleeve open front with a zipper, suitable for outdoors",
@@ -374,6 +393,7 @@
 
     {
       "id": " Children 20",
+      "category": "children",
       "name": "Children Autumn And Winter Thickened Leather Jacket",
       "description": {
         "style": "Loose fitting hooded sweater made from thicker frabic for additional warmth, with a hood with draw strings, long sleeves with kangaroo pocket.",
@@ -394,6 +414,7 @@
 
     {
       "id": "Children 21",
+      "category": "children",
       "name": "Boy's Long Sleeve Button-Up Shirt (Gray)",
 
       "description": {
@@ -410,6 +431,7 @@
 
     {
       "id": "Children 22",
+      "category": "children",
       "name": "Boy's Round Neck Polo Shirt- White",
       "description": {
         "style": "Comfortable Causual and loose fitting white coloured t-shirt, it can be worn by anyone, made from 100% cotton, with double stitche at the botton amd sleeve hems from extra durability ",
@@ -431,6 +453,7 @@
   "women": [
     {
       "id": "Women 1",
+      "category": "women",
       "name": "Women's Suit Office Long Sleeve Suit Pant 2 Piece Set",
       "description": {
         "style": "2 Piece Work Suits for Women's Houndstooth Print Buttons Open Front Long Sleeve Coat + Long Pants Casual Clothes",
@@ -450,6 +473,7 @@
 
     {
       "id": "Women 2",
+      "category": "women",
       "name": "Ladies Office Work Blazers Spring Autumn Blazers",
       "description": {
         "style": "100% wool ladies office blazer long sleeve with solid colors and beautiful patterned stripes extra thick suitables for cold weathers.",
@@ -467,6 +491,7 @@
 
     {
       "id": "Women 3",
+      "category": "women",
       "name": "White Oversized Boyfriend Shirt Long Sleeve And Short",
       "description": {
         "style": "100% cooton oversized white boyfriend shirt long sleeve and matching short with similar fabric, single breasted shirt button down with double needle stich and the hems and botton for added durbality.",
@@ -483,6 +508,7 @@
 
     {
       "id": "Women 4",
+      "category": "women",
       "name": "Summer Fashoin Ladies Outerwear Denim Jacket",
       "description": {
         "style": "The Denim jacket is created with clean cotton fibres combined into long strings, which are woven tightly together with an industrial machine. The key denim fabric properties — durability and thickness — come from the strength of these twists of yarn. ",
@@ -503,6 +529,7 @@
 
     {
       "id": "Women 5",
+      "category": "women",
       "name": "Women Leather Coat Jacket With Zipper",
       "description": {
         "style": "Ladies leather Bikers jacket with zippers and long sleeve it is warm and windproof and aside from their use by motorcyclists they are also worn for protection during rugged outdoor activities",
@@ -523,6 +550,7 @@
 
     {
       "id": "Women 6",
+      "category": "women",
       "name": "Quality ladies Strechy Demin short",
       "description": {
         "style": "The demin short is created with clean cotton fibres combined into long string, which are woven tightly together with industrial machine it is very durable and has additional thickness very suitable fot outdoors.",
@@ -544,6 +572,7 @@
 
     {
       "id": "Women 7",
+      "category": "women",
       "name": "Ladies Long Shiny Palazzo Pant",
       "description": {
         "style": " Long unisex pants cut with a loose, extremely wide leg that flares out from the waist, it is made from very soft light and shiny materials the botton is double needle stiche for added durability. It can be Pair with any long kurti, tunic, an oversized dress shirt, or a sweater to create a comfy but chic look",
@@ -563,6 +592,7 @@
 
     {
       "id": "Women 8",
+      "category": "women",
       "name": "Ladies Crop Top Hoodie(Purple)",
       "description": {
         "style": "Fitted hooded sweater made from thicker frabic for additional warmth, with zipper, long sleeves with kangaroo pocket can be paired with a demin short or trouser .",
@@ -583,6 +613,7 @@
 
     {
       "id": "Women 9",
+      "category": "women",
       "name": "Sliver Mini Party Dress With a Long Sleeve",
       "description": {
         "style": "stylish sliver party dress made from fine and delicate silk material,with fitted long sleeve and zipper ",
@@ -603,6 +634,7 @@
 
     {
       "id": "Women 10",
+      "category": "women",
       "name": "Gorgeous Long Patterned Fashionable Ladies Gown",
       "description": {
         "style": "Long gorgeous beautiful patterned fashionable ladies gown, with double sided slit and long sleeve suitable for parties.made from fine silk materials for added flare and movement ",
@@ -623,6 +655,7 @@
 
     {
       "id": "Women 11",
+      "category": "women",
       "name": "Women Sexy Attractive Lingerie Bra And Pant Set",
       "description": {
         "style": "This stunning lingerie is crafted from sumptuous silk, with a deep wine red hue and a soft velvety texture, This delicate lingerie features a classic silhouette with elegant scalloped lace trim, itis made from a luxurious lace material. ",
@@ -643,6 +676,7 @@
 
     {
       "id": "Women 12",
+      "category": "women",
       "name": "Ladies Hipster Off-White Combat Short Skirt",
       "description": {
         "style": "The demin skirt is created with clean cotton fibres combined into long string, which are woven tightly together with industrial machine it is very durable and has additional thickness very suitable fot outdoors. ",
@@ -664,6 +698,7 @@
 
     {
       "id": "Women 13",
+      "category": "women",
       "name": "Ladies Sleeveless Turtle Neck Top",
       "description": {
         "style": "Also known as a polo neck, a turtleneck is a garment with a high neckline that folds over. The turtleneck collar sits close around the neck with a snug fit. Turtlenecks come in different styles, including sweaters and short sleeve shirts, and also come in a variety of materials, such as cashmere, wool, and cotton.",
@@ -683,6 +718,7 @@
 
     {
       "id": "Women 14",
+      "category": "women",
       "name": "Women's Work Chiffon Blouse Casual Tank Top Long Sleeve",
       "description": {
         "style": "stylish Women's wrap around Work Chiffon Blouse Casual Tank Top with Long Sleeve, made form delicate light slik material can be paired with a skirt from similar materials or a demin jean. Its is suitable for official and causual looks.",
@@ -703,6 +739,7 @@
 
     {
       "id": "Women 15",
+      "category": "women",
       "name": "Women Autumn Elegant Retro Dress O Neck Long Sleeve Pockets Linen Maxi Long Dress (Black)",
       "description": {
         "style": "This is somtimes call an Abaya the garment worn by women around the globe. It is long-sleeved, black in style, floor-long. It is worn over street garments and is designed to be free and flowing, hiding the body curves. The sleeves are made of the same fabric; they are not stitched on individually. The abaya can be worn with other clothes, like a scarf covering the hair ",
@@ -724,6 +761,7 @@
 
     {
       "id": "Women 16",
+      "category": "women",
       "name": "Ladies Gym Workout Yoga Wear 2 In 1 Set (White)",
       "description": {
         "style": "Women's two piece activewear set featuring racerback bra top and high waisted leggings. The bra top features thick shoulder straps and a racer back. The matching high waisted leggings have a wrap over seaming to the waistband ",
@@ -745,6 +783,7 @@
 
     {
       "id": "Women 17",
+      "category": "women",
       "name": "Silk Satin Chinese Traditional Dress Red With Golden Design",
       "description": {
         "style": "Elegant  deep red Floral Long Chinese Prom Dress Cheongsam Size,  It consists of a blouse (襦, ru) and a wrap-around skirt (裙, qun), with a draw string closure ",
@@ -761,6 +800,7 @@
 
     {
       "id": "Women 18",
+      "category": "women",
       "name": "Women Long Sleeve White Kaftan Dress",
       "description": {
         "style": "Stunning women long sleeve white kaftan Dress, it is an ankle-length garment with long, flowing sleeves. It is made from a delicate silk material",
@@ -783,6 +823,7 @@
   "men": [
     {
       "id": "men1",
+      "category": "men",
       "name": "Black Trench Coat",
       "description": {
         "style": "Men's leather winter over coat jacket extra thick,long sleeve open front with a black leather belt",
@@ -804,6 +845,7 @@
 
     {
       "id": "men2",
+      "category": "men",
       "name": "Winter Wool Jacket Men's High Quality Wool Coat",
       "description": {
         "style": "Men's winter wool jacket with oversized collar that is either worn up or folded down, creating a wide neck opening that is perfect for displaying your favorite winter scarf",
@@ -824,6 +866,7 @@
 
     {
       "id": "men3",
+      "category": "men",
       "name": "Men's Causual Trail Convertible Pants- Khaki",
       "description": {
         "style": "Casual yet refined pants which  feature slant pockets, a zip fly, and visible stitching, made from a durable cotton material with a classic sand like color",
@@ -844,6 +887,7 @@
 
     {
       "id": "men4",
+      "category": "men",
       "name": "Men's Single- Breasted Leather Jacket Windbreaker",
 
       "description": {
@@ -865,6 +909,7 @@
 
     {
       "id": "men5",
+      "category": "men",
       "name": "Men's Superior Quality Long Sleeve Shirt",
 
       "description": {
@@ -881,6 +926,7 @@
 
     {
       "id": "men6",
+      "category": "men",
       "name": "Pure Cotton White Short Sleeve Polo",
       "description": {
         "style": "Comfortable Causual and loose fitting white coloured t-shirt, it can be worn by anyone, made from 100% cotton, with double stitche at the botton amd sleeve hems from extra durability ",
@@ -900,6 +946,7 @@
 
     {
       "id": "men7",
+      "category": "men",
       "name": "Classic Cotton Designers Polo",
       "description": {
         "style": "This classic crew neck patterned polo is made with high quality cotton that would last for years and give you a comfortable feel with double stiche at the bottom and hems for added durablity",
@@ -919,6 +966,7 @@
 
     {
       "id": "men8",
+      "category": "men",
       "name": "Casual Sport Breathable Short Sleeve T-Shirt (White)",
       "description": {
         "style": "This classic white crew neck  is made with high quality cotton that would last for years and give you a comfortable feel with double stiche at the bottom and hems for added durablity",
@@ -938,6 +986,7 @@
 
     {
       "id": "men9",
+      "category": "men",
       "name": "Men Long Sleeve Turtle Neck Top/ Cooperate Gray",
       "description": {
         "style": "Also known as a polo neck, a turtleneck is a garment with a high neckline that folds over. The turtleneck collar sits close around the neck with a snug fit. Turtlenecks come in different styles, including sweaters and long sleeve shirts, and also come in a variety of materials, such as cashmere, wool, and cotton.",
@@ -957,6 +1006,7 @@
 
     {
       "id": "men10",
+      "category": "men",
       "name": "Men's Suit 2 Piece Set- Classic Luxury Wedding Suit ",
       "description": {
         "style": "single-breasted with two button,wedding suit comprising a suit jacket and trousers of identical textiles worn with a collared dress shirt, necktie, and dress shoes",
@@ -973,6 +1023,7 @@
 
     {
       "id": "men11",
+      "category": "men",
       "name": "Business Formal Men Suit Set with a Lapel Formal Stylish Buttons Pocket Blazer",
       "description": {
         "style": "single-breasted with two button,wedding suit comprising a suit jacket and trousers of identical textiles worn with a collared dress shirt, necktie, and dress shoes",
@@ -994,6 +1045,7 @@
 
     {
       "id": "men12",
+      "category": "men",
       "name": "Men Tracksuit Hooded Sweatshirt",
       "description": {
         "style": "Loose fitting hooded sweater made from thicker frabic for additional warmth, with a hood with draw strings, long sleeves with kangaroo pocket.",
@@ -1014,6 +1066,7 @@
 
     {
       "id": "men13",
+      "category": "men",
       "name": "Men's Suit Jacket Big Size Man Business Corduroy Men Blazer",
       "description": {
         "style": "This type of jacket resmbles a suit jacket  but cut more casually.It is distinguished from a sport coat as a more formal garment and tailored from solid colour fabrics with a naval-style metal buttons.",
@@ -1031,6 +1084,7 @@
 
     {
       "id": "men14",
+      "category": "men",
       "name": "Groom Wedding Suits For Men Fashion Slim Fit Best Man 2 Piece Black",
       "description": {
         "style": "single-breasted with two button, groom wedding suit comprising a suit jacket and trousers of identical textiles worn with a collared dress shirt, necktie, and dress shoes",
@@ -1052,6 +1106,7 @@
 
     {
       "id": "men15",
+      "category": "men",
       "name": "Summer Men's 2 Piece Sets Fitted T-Shirt",
       "description": {
         "style": "Button down camp collar silk neck shirt with matching trouser",
@@ -1073,6 +1128,7 @@
 
     {
       "id": "men16",
+      "category": "men",
       "name": "Men's Jacket High Quality Fashion Casual Coat",
       "description": {
         "style": "The Denim jacket is created with clean cotton fibres combined into long strings, which are woven tightly together with an industrial machine. The key denim fabric properties — durability and thickness — come from the strength of these twists of yarn. ",
@@ -1093,6 +1149,7 @@
 
     {
       "id": "men17",
+      "category": "men",
       "name": "Men's Scottish Tartan Kilt Black Vintage Skirt",
       "description": {
         "style": "Men's Scottish Tartan Kilt Black Vintage Skirt is a garment resembling a wrap-around knee-length skirt, made of twill woven worsted wool with heavy pleats at the sides and back and traditionally a tartan pattern.",
@@ -1114,6 +1171,7 @@
 
     {
       "id": "men18",
+      "category": "men",
       "name": "High Quality Men's Traditional Attire",
       "description": {
         "style": "High quality men's tradition attire 2-piece, a short sleeve knee length and a trouser from the same fabric",
@@ -1135,6 +1193,7 @@
 
     {
       "id": "men19",
+      "category": "men",
       "name": "Classic Cotton Designers Polo for Men",
       "description": {
         "style": "This classic crew neck patterned polo is made with high quality cotton that would last for years and give you a comfortable feel with double stiche at the bottom and hems for added durablity",

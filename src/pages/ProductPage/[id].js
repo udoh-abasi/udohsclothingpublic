@@ -93,7 +93,7 @@ export const ProductPage = () => {
   useEffect(() => {
     const retrievedCart = JSON.parse(localStorage.getItem("myCart")) || [];
     dispatch(cartAction(retrievedCart));
-  }, []);
+  }, [dispatch]);
 
   const currentCartInRedux = useSelector(cartSelector);
 
