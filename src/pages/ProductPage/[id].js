@@ -12,7 +12,6 @@ import { cartAction } from "@/myReduxFiles/actions";
 
 export const ProductPage = () => {
   const [singleCloth, setsingleCloth] = useState("");
-  const [entireCloth, setEntireCloth] = useState("");
   const [clothState, setClothState] = useState("");
   const [shuffledCloth, setShuffledCloth] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,19 +20,19 @@ export const ProductPage = () => {
 
   const router = useRouter();
 
+  // This getShuffledList() is used to get 5 random cloths to populate the 'You may allso like' section
   const getShuffledList = useCallback((theArray, numberOfItemsTOReturn) => {
     const shuffled = theArray.sort(() => 0.5 - Math.random());
     return shuffled.slice(0, numberOfItemsTOReturn);
   }, []);
 
+  // This fetches the actual cloth
   useEffect(() => {
     const fetchData = async (category, id) => {
       try {
         const response = await fetch(`/api/getData/${category}`);
         if (response.ok) {
           const data = await response.json();
-
-          setEntireCloth(data.theData);
 
           const singleClothData = data.theData.find(
             (eachCloth) => eachCloth.id === id
@@ -57,6 +56,7 @@ export const ProductPage = () => {
       }
     };
 
+    // This router.isReady is added to avoid errors. It checks if the router is ready before sending the fetch request
     if (router.isReady) {
       const { query } = router;
       const { category, id } = query;
@@ -73,6 +73,7 @@ export const ProductPage = () => {
     setQuantityToPurchase(1);
   }, [singleCloth]);
 
+  // This is added to check the user's current scroll direction. The useEffect below adds an event listener to the window
   const [scrollDir] = useDetectScroll({});
   const [currentScrollPosition, setCurrentScrollPosition] = useState(0);
 
@@ -90,6 +91,7 @@ export const ProductPage = () => {
 
   const dispatch = useDispatch();
 
+  // On first load, this checks the localStorage and populates the redux store with the cart
   useEffect(() => {
     const retrievedCart = JSON.parse(localStorage.getItem("myCart")) || [];
     dispatch(cartAction(retrievedCart));
@@ -97,6 +99,7 @@ export const ProductPage = () => {
 
   const currentCartInRedux = useSelector(cartSelector);
 
+  // This function will execute when the 'Add to cart' button is clicked
   const addItemToCart = (cloth) => {
     if (
       quantityToPurchase &&
@@ -105,6 +108,8 @@ export const ProductPage = () => {
     ) {
       const noOfItemsNeeded = Number(quantityToPurchase);
       const newClothArray = [];
+
+      // We use a for loop to add the current number of that item request. So, if the user requested 5, then 5 of the clothe's object will be added to the 'newClothArray' array
       for (let index = 0; index < noOfItemsNeeded; index++) {
         newClothArray.push(cloth);
       }

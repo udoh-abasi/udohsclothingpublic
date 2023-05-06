@@ -1,14 +1,12 @@
+// This helper function returns a Map(), which has the string of each item in the cart as its key, and the number of occurrence of that item, as its value
 export const getNumberOfEachItemInCart = (array) => {
   const initialValue = new Map();
-  initialValue.get();
 
   const reduceCallback = (accumulatedValue, currentValue) => {
-    const myRet = accumulatedValue.set(
+    return accumulatedValue.set(
       JSON.stringify(currentValue),
       (accumulatedValue.get(JSON.stringify(currentValue)) || 0) + 1
     );
-
-    return myRet;
   };
 
   return array.reduce(reduceCallback, initialValue);

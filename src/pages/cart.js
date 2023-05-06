@@ -7,6 +7,7 @@ import Link from "next/link";
 import { addOrRemoveClassToBody } from "@/util/addOrRemoveClassToBody";
 import { useDispatch, useSelector } from "react-redux";
 import { cartAction } from "@/myReduxFiles/actions";
+import { useRouter } from "next/router";
 
 export const Cart = ({
   setOverLayForCart,
@@ -26,6 +27,7 @@ export const Cart = ({
   const theCartElements = []; // NOTE: Since, 'new Map()' does not support the array's map()  method, we used forEach to loop through our Map(), and then pushed the result here, then displayed this in our code
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   return (
     <section
@@ -49,6 +51,19 @@ export const Cart = ({
               <Link
                 href={`/ProductPage/${id}?category=${category}`}
                 className="flex-[0_0_30%] max-w-[120px]"
+                onClick={() => {
+                  const theCart = document.querySelector("#shopping-cart");
+                  theCart.classList.toggle("translate-x-[300%]");
+                  theCart.classList.toggle("translate-x-[0%]");
+
+                  setOverLayForCart(false);
+                  setOverLayForCartOnBigScreen(false);
+                  addOrRemoveClassToBody();
+
+                  setTimeout(() => {
+                    theCart.classList.toggle("hidden");
+                  }, 1000);
+                }}
               >
                 <picture>
                   <source srcSet={image} />
@@ -57,7 +72,22 @@ export const Cart = ({
               </Link>
 
               <figcaption className="flex-[0_0_55%] text-base">
-                <Link href={`/ProductPage/${id}?category=${category}`}>
+                <Link
+                  href={`/ProductPage/${id}?category=${category}`}
+                  onClick={() => {
+                    const theCart = document.querySelector("#shopping-cart");
+                    theCart.classList.toggle("translate-x-[300%]");
+                    theCart.classList.toggle("translate-x-[0%]");
+
+                    setOverLayForCart(false);
+                    setOverLayForCartOnBigScreen(false);
+                    addOrRemoveClassToBody();
+
+                    setTimeout(() => {
+                      theCart.classList.toggle("hidden");
+                    }, 1000);
+                  }}
+                >
                   <p className="h-[44px] overflow-hidden">{name}</p>
                 </Link>
                 <p className="py-2 font-bold text-center text-[#af4261] dark:text-[#f3ec78]">
@@ -75,13 +105,13 @@ export const Cart = ({
                     onClick={() => {
                       // This removes the last element added
                       if (value !== 1) {
-                        const newArray = [...currentCartInRedux];
+                        const newArray = [...currentCartInRedux]; // This line was added bcoz next will not allow you modify the original array
 
                         const theReversedIndex = newArray
                           .reverse()
                           .findIndex((eachCloth) => eachCloth.id === id);
 
-                        const theIndex = newArray.length - 1 - theReversedIndex;
+                        const theIndex = newArray.length - 1 - theReversedIndex; // This is how we get the last index
 
                         const newcurrentArray = [...currentCartInRedux];
                         newcurrentArray.splice(theIndex, 1);
@@ -177,6 +207,21 @@ export const Cart = ({
           form="numberToPurchaseForm"
           disabled={!currentCartInRedux.length}
           className={`py-2 text-base w-[80%] rounded-md font-bold disabled:bg-gray-400 disabled:cursor-not-allowed bg-green-500`}
+          onClick={() => {
+            const theCart = document.querySelector("#shopping-cart");
+            theCart.classList.toggle("translate-x-[300%]");
+            theCart.classList.toggle("translate-x-[0%]");
+
+            setOverLayForCart(false);
+            setOverLayForCartOnBigScreen(false);
+            addOrRemoveClassToBody();
+
+            router.push("/checkout");
+
+            setTimeout(() => {
+              theCart.classList.toggle("hidden");
+            }, 1000);
+          }}
         >
           Proceed to checkout
         </button>

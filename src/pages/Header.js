@@ -28,11 +28,13 @@ export const Header = () => {
 
   const itemsInCart = useSelector(cartSelector);
 
+  // On first load, this useEffect checks the localStorage and populates our redux store with the items in cart
   useEffect(() => {
     const retrievedCart = JSON.parse(localStorage.getItem("myCart")) || [];
     dispatch(cartAction(retrievedCart));
   }, [dispatch]);
 
+  // This useEffect imports and runs a helper function which checks the occurence of each items, in the cart, and returns a Map(), containing an item and how many of it was added to cart
   useEffect(() => {
     const result = getNumberOfEachItemInCart(itemsInCart);
     setNumberOfEachItemInCart(result);
