@@ -164,3 +164,14 @@ footer {
 #shopping-cart {
   transition: transform 0.5s linear;
 }
+
+#checkoutAsGuest {
+  max-width: 400px;
+}
+
+
+@media only screen and (min-width: 580px) {
+  #checkoutAsGuest {
+    max-width: 90%;
+  }
+}

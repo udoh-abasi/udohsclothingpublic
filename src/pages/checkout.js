@@ -1,238 +1,295 @@
-import { useEffect, useRef, useState } from "react";
-import Select from "react-select";
+import { cartSelector } from "@/myReduxFiles/selectors";
+import { useState } from "react";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import {
+  MdOutlineRadioButtonUnchecked,
+  MdCheckBoxOutlineBlank,
+} from "react-icons/md";
+import { BsCheck2Circle, BsCheck2Square } from "react-icons/bs";
+import { useSelector } from "react-redux";
+import { CountryStateCity } from "./countryStateCity";
 
 export const CheckOutPage = () => {
-  // Set the state, city and country values
-  const [countryValue, setCountryValue] = useState("");
-  const [stateValue, setStateValue] = useState("");
-  const [cityValue, setCityValue] = useState("");
+  // Get Items in cart
+  const itemsInCart = useSelector(cartSelector);
 
-  // Use this to set up when the options are loading from the server
-  const [countryIsLoading, setCountryIsLoading] = useState(false);
-  const [stateIsLoading, setStateIsLoading] = useState(false);
-  const [cityIsLoading, setCityIsLoading] = useState(false);
+  // Get the total Price
+  const priceReducer = itemsInCart.reduce((accumulatedVal, currentVal) => {
+    const thePrice = currentVal.price.slice(1);
+    return accumulatedVal + Number(thePrice);
+  }, 0);
 
-  // These are the country codes we will send as query parameters to the backend
-  const [countryCode, setCountryCode] = useState("");
-  const [stateCode, setStateCode] = useState("");
-
-  // These are the states where the results from the fetch() will be stored
-  const [cities, setCities] = useState([]);
-  const [state, setState] = useState([]);
-  const [country, setCountry] = useState([]);
-
-  // Set up the options to be used in the 'Select'
-  const [countryOptions, setCountryOptions] = useState([]);
-  const [stateOptions, setStateOptions] = useState([]);
-  const [cityOptions, setCityOptions] = useState([]);
-
-  // Set up the URL where requests will be sent to
-  const getCountryURL = "/api/getCountryStateCities/country";
-  const getStateURL = `/api/getCountryStateCities/getStateByCountry/${countryCode}`;
-  const getCityURL = `/api/getCountryStateCities/getCityByStateandCountry/stateAndCityEndpoint?countryCode=${countryCode}&stateCode=${stateCode}`;
-
-  // This is the fetch() function, we will use to send all three requests (for country, state and city)
-  const fetchData = async (theURL, onSetState, onSetIsLoading) => {
-    onSetIsLoading(true);
-    try {
-      const response = await fetch(theURL);
-      if (response.ok) {
-        const data = await response.json();
-
-        onSetState(data.data);
-        onSetIsLoading(false);
-      } else {
-        onSetIsLoading(false);
-        console.log("There was an error");
-      }
-    } catch (error) {
-      onSetIsLoading(false);
-      console.log(error);
-    }
-  };
-
-  // On first load, this will run, and send a request to get all the countries in the world, and populate the select field
-  useEffect(() => {
-    fetchData(getCountryURL, setCountry, setCountryIsLoading);
-  }, []);
-
-  // When we get the country data, these useEffect will run and populate the <options> of the country's <Select />
-  useEffect(() => {
-    const thecountryOption = country.map((eachCountry) => ({
-      value: eachCountry.iso2,
-      label: eachCountry.name,
-    }));
-
-    setCountryOptions(thecountryOption); // Set the country options to be used in the Country's select
-  }, [country]);
-
-  // Send the state Request
-  useEffect(() => {
-    // Since this useEffect will run on first load, we want to make sure that it is only when we have a country code that it will send the request
-    if (countryCode) {
-      fetchData(getStateURL, setState, setStateIsLoading);
-    }
-  }, [getStateURL, countryCode]);
-
-  // When a country is selected in the dropdown, run this function to populate the state's select field
-  useEffect(() => {
-    const onChangeCountry = () => {
-      setStateValue(null);
-      setCityValue(null);
-      const theStateOption = state.map((eachState) => ({
-        value: eachState.iso2,
-        label: eachState.name,
-      }));
-
-      setStateOptions(theStateOption);
-    };
-
-    if (countryCode && state !== []) {
-      onChangeCountry();
-    }
-  }, [countryCode, state]);
-
-  // Send the Cities Request
-  useEffect(() => {
-    if (stateCode) {
-      fetchData(getCityURL, setCities, setCityIsLoading);
-    }
-  }, [getCityURL, stateCode]);
-
-  // When a State is selected in the dropdown, run this function to populate the cities dropdown
-  useEffect(() => {
-    const onChangeState = () => {
-      setCityValue(null); // This clears the city's select field
-      const theCityOption = cities.map((eachCity) => ({
-        value: eachCity.id,
-        label: eachCity.name,
-      }));
-
-      setCityOptions(theCityOption);
-    };
-
-    if (stateCode && cities !== []) {
-      onChangeState();
-    }
-  }, [stateCode, cities]);
+  const [checkoutOption, setCheckoutOption] = useState("guest");
+  const [keepMeUpToDate, setKeepMeUpToDate] = useState(true);
 
   return (
-    <>
-      <form>
-        <div className="dark:text-black">
-          <Select
-            id="selectboxForCountry" // This was added to get rid of the error that says 'Prop `id` did not match'
-            instanceId="selectboxForCountry" // This also was added to get rid of the error that says 'Prop `id` did not match'
-            options={countryOptions}
-            required
-            isSearchable
-            value={countryValue}
-            onChange={(value) => {
-              setCountryCode(value.value);
-              setCountryValue(value.name);
-            }}
-            placeholder="Select Country..."
-            isLoading={countryIsLoading}
-            loadingMessage={() => "Loading..."}
-          />
+    <section className="p-4">
+      <div className="flex text-xs">
+        <p className="bg-green-500 text-white flex items-center justify-center font-bold p-2 rounded-2xl flex-[1_0_120px] mr-2">
+          <span className="flex justify-center items-center mr-2 bg-white text-black rounded-full w-[23px] h-[23px] ">
+            1
+          </span>
+          Shipping
+        </p>
+
+        <p className="bg-[gray] text-white flex items-center justify-center font-bold p-2 rounded-2xl flex-[1_0_120px] ">
+          <span className="flex justify-center items-center mr-2 bg-white text-black rounded-full w-[23px] h-[23px] ">
+            2
+          </span>
+          <span className="whitespace-nowrap overflow-hidden text-clip">
+            Review & Payment
+          </span>
+        </p>
+      </div>
+
+      <h2 className="text-center my-4 text-2xl font-bold">Shipping Address</h2>
+
+      <div className="flex justify-between text-xl border-y-2 py-3 border-y-black dark:border-y-white">
+        <div className="font-bold">
+          <p>Estimated Total</p>
+          <p className="text-[#af4261] dark:text-[#f3ec78]">
+            $&nbsp;{priceReducer.toFixed(2)}
+          </p>
         </div>
 
-        <div className="dark:text-black">
-          <Select
-            id="selectboxForState"
-            instanceId="selectboxForState"
-            options={stateOptions}
-            required
-            isSearchable
-            value={stateValue}
-            onChange={(value) => {
-              setStateCode(value.value);
-              setStateValue(value.name);
+        <div>
+          <button
+            className="block p-3 relative"
+            onClick={() => {
+              const cartButton = document.querySelector("#CartButton");
+              cartButton.click();
             }}
-            placeholder="Select State..."
-            isDisabled={!countryCode}
-            isLoading={stateIsLoading}
-            loadingMessage={() => "Loading..."}
+            title="View your shopping Cart"
+          >
+            <AiOutlineShoppingCart className="text-4xl" />
+            <span className="absolute text-base bottom-9 left-8 bg-green-500 rounded-full w-6 h-6 text-center flex items-center justify-center z-[1] pointer-events-none">
+              {itemsInCart.length}
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <form className="flex flex-col mb-2 mt-8 font-bold justify-between min-[580px]:flex-row">
+        <div className="relative mb-3">
+          <div className="absolute left-0">
+            {checkoutOption === "login" ? (
+              <BsCheck2Circle className="text-2xl pointer-events-none font-bold" />
+            ) : (
+              <MdOutlineRadioButtonUnchecked className="text-2xl pointer-events-none" />
+            )}
+          </div>
+          <input
+            type="radio"
+            id="checkoutOption1"
+            name="checkoutOption"
+            className="w-[20px] h-[20px] opacity-0"
+            onChange={() => setCheckoutOption("login")}
           />
+          <label htmlFor="checkoutOption1" className="ml-2">
+            Login to Checkout.
+            <small className="text-gray-400"> (This option is faster)</small>
+          </label>
         </div>
 
-        <div className="dark:text-black">
-          <Select
-            id="selectboxForCities"
-            instanceId="selectboxForCities"
-            options={cityOptions}
-            required
-            isSearchable
-            value={cityValue}
-            onChange={(value) => {
-              console.log(value);
-              setCityValue(value.name);
-            }}
-            placeholder="Select City..."
-            isDisabled={!stateCode}
-            isLoading={cityIsLoading}
-            loadingMessage={() => "Loading..."}
+        <div className="relative">
+          <div className="absolute left-0 text-black dark:text-white">
+            {checkoutOption === "guest" ? (
+              <BsCheck2Circle className="text-2xl pointer-events-none font-bold" />
+            ) : (
+              <MdOutlineRadioButtonUnchecked className="text-2xl pointer-events-none " />
+            )}
+          </div>
+          <input
+            type="radio"
+            id="checkoutOption2"
+            name="checkoutOption"
+            className="w-[20px] h-[20px] opacity-0"
+            onChange={() => setCheckoutOption("guest")}
           />
+          <label htmlFor="checkoutOption2" className="ml-2">
+            Checkout as guest.
+          </label>
         </div>
-
-        <input type="radio" id="checkoutOption1" name="checkoutOption" />
-        <label htmlFor="checkoutOption1">
-          Login to Checkout. (This is faster)
-        </label>
-
-        <input
-          type="radio"
-          id="checkoutOption2"
-          name="checkoutOption"
-          defaultChecked
-        />
-        <label htmlFor="checkoutOption2">Checkout as guest</label>
       </form>
 
-      <section>
-        <h3>CheckOut as Guest</h3>
-        <form onSubmit={(e) => e.preventDefault()}>
-          <input type="email" id="guestEmail" required placeholder=" " />
-          <label htmlFor="guestEmail">Email Address</label>
+      <section className="flex justify-center ">
+        <div id="checkoutAsGuest">
+          <h3 className="text-center my-4 text-xl font-bold">
+            Checkout as Guest
+          </h3>
 
-          <label htmlFor="keepMeUpToDate">
-            Keep me up to date on new and exciting offers
-          </label>
-          <input type="checkbox" id="keepMeUpToDate" required defaultChecked />
+          <form onSubmit={(e) => e.preventDefault()} className="pb-6">
+            <div className="flex flex-col-reverse pb-4">
+              <input
+                type="email"
+                id="guestEmail"
+                required
+                placeholder=" "
+                className="dark:text-black block w-full rounded-xl p-1 border-black border-2"
+              />
+              <label htmlFor="guestEmail" className="block ">
+                Email Address
+              </label>
+            </div>
 
-          <button type="submit">Verify Email</button>
-        </form>
+            <div className="pb-4 relative ">
+              <div className="absolute text-xl top-1 text-black dark:text-white">
+                {keepMeUpToDate ? (
+                  <BsCheck2Square />
+                ) : (
+                  <MdCheckBoxOutlineBlank />
+                )}
+              </div>
 
-        <form onSubmit={(e) => e.preventDefault()}>
-          <input type="text" id="verifiCationCode" required placeholder=" " />
-          <label htmlFor="verifiCationCode">
-            Enter the six (6) digit Verification code sent
-          </label>
+              <input
+                type="checkbox"
+                id="keepMeUpToDate"
+                required
+                defaultChecked
+                className="w-[20px] h-[20px] opacity-0"
+                onChange={() => setKeepMeUpToDate(!keepMeUpToDate)}
+              />
 
-          <button type="submit">Verify Email</button>
-        </form>
+              <label htmlFor="keepMeUpToDate" className="text-sm ml-2">
+                Keep me up to date on new and exciting offers
+              </label>
+            </div>
 
-        <form onSubmit={(e) => e.preventDefault()}>
-          <input
-            type="email"
-            id="guestSignupEmail"
-            required
-            placeholder=" "
-            disabled
-          />
-          <label htmlFor="guestSignupEmail">Email Address</label>
+            <button
+              type="submit"
+              className="relative flex items-center px-12 py-1 overflow-hidden text-lg font-medium text-white dark:text-white border-2 rounded-full group w-full justify-center"
+            >
+              <span className="absolute left-0 block w-full transition-all bg-[#af4261] opacity-100 h-full top-0"></span>
+              <span className="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  ></path>
+                </svg>
+              </span>
+              <span className="relative">Verify Email</span>
+            </button>
+          </form>
 
-          <input type="text" id="yourName" required placeholder=" " />
-          <label htmlFor="yourName">Your Name</label>
+          <form onSubmit={(e) => e.preventDefault()} className="pb-8 pt-3">
+            <fieldset className="border-2 border-black dark:border-white p-6 rounded-3xl">
+              <legend className="ml-3 px-1 font-bold">Verify Email</legend>
 
-          <input type="text" id="streetAddress" required placeholder=" " />
-          <label htmlFor="streetAddress">Street Address</label>
+              <p className="pb-3">
+                To verify that this is your email, please enter the verification
+                code sent to <span className="underline "> udoh@gmail.com</span>
+              </p>
 
-          <input type="text" id="phoneNumber" required placeholder=" " />
-          <label htmlFor="phoneNumber">Phone Number</label>
-        </form>
+              <div className="flex flex-col-reverse">
+                <input
+                  type="text"
+                  id="verifiCationCode"
+                  required
+                  placeholder=" "
+                  className="dark:text-black block w-full rounded-xl p-1 border-black border-2"
+                />
+
+                <label htmlFor="verifiCationCode" className="block">
+                  Verification code
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                className="my-6 text-center border-2 w-full py-2 rounded-full font-bold bg-green-500 text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms]"
+              >
+                Submit Code
+              </button>
+
+              <button
+                type="submit"
+                className="text-center border-2 w-[150px] py-2 rounded-full font-bold bg-black text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms]"
+              >
+                Resend Code
+              </button>
+            </fieldset>
+          </form>
+
+          <form onSubmit={(e) => e.preventDefault()}>
+            <div className="flex flex-col-reverse mb-4">
+              <input
+                type="text"
+                id="yourName"
+                required
+                placeholder=" "
+                className="dark:text-black block w-full rounded-xl p-1 border-black border-2"
+              />
+              <label htmlFor="yourName" className="block">
+                Name
+              </label>
+            </div>
+
+            <div className="">
+              <CountryStateCity />
+            </div>
+
+            <div className="flex flex-col-reverse mb-4">
+              <input
+                type="text"
+                id="streetAddress"
+                required
+                placeholder=" "
+                className="dark:text-black block w-full rounded-xl p-1 border-black border-2 "
+              />
+              <label htmlFor="streetAddress" className="block">
+                Street Address
+              </label>
+            </div>
+
+            <div className="flex flex-col-reverse mb-8">
+              <input
+                type="text"
+                id="phoneNumber"
+                required
+                placeholder=" "
+                className="dark:text-black block w-full rounded-xl p-1 border-black border-2"
+              />
+              <label htmlFor="phoneNumber" className="block">
+                Phone Number
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              className="mb-8 font-bold relative flex items-center px-12 py-2 overflow-hidden text-lg text-white dark:text-white border-2 rounded-full group w-full justify-center "
+            >
+              <span className="absolute left-0 block w-full transition-all bg-[#af4261] opacity-100 h-full top-0"></span>
+              <span className="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  ></path>
+                </svg>
+              </span>
+              <span className="relative">NEXT</span>
+            </button>
+          </form>
+        </div>
       </section>
-    </>
+    </section>
   );
 };
 
