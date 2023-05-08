@@ -165,13 +165,8 @@ footer {
   transition: transform 0.5s linear;
 }
 
-#checkoutAsGuest {
-  max-width: 400px;
-}
-
-
-@media only screen and (min-width: 580px) {
-  #checkoutAsGuest {
-    max-width: 90%;
-  }
+/*Style the login field in the checkout section*/
+#loginWrapper {
+  border-top-right-radius: 20%;
+  border-top-left-radius: 20%;
 }
