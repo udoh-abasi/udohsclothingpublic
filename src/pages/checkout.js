@@ -1,6 +1,10 @@
 import { cartSelector } from "@/myReduxFiles/selectors";
 import { useEffect, useState } from "react";
-import { AiOutlineShoppingCart } from "react-icons/ai";
+import {
+  AiFillEye,
+  AiFillEyeInvisible,
+  AiOutlineShoppingCart,
+} from "react-icons/ai";
 import {
   MdOutlineRadioButtonUnchecked,
   MdCheckBoxOutlineBlank,
@@ -21,7 +25,7 @@ export const CheckOutPage = () => {
     return accumulatedVal + Number(thePrice);
   }, 0);
 
-  const [checkoutOption, setCheckoutOption] = useState("guest");
+  const [checkoutOption, setCheckoutOption] = useState("login");
   const [keepMeUpToDate, setKeepMeUpToDate] = useState(true);
 
   // Get and store the map() for each items in the cart, for display by the right hand side on bigger screens
@@ -33,6 +37,14 @@ export const CheckOutPage = () => {
   }, [itemsInCart]);
 
   const theCartItems = [];
+
+  const [guestEmail, setGuestEmail] = useState("");
+  const [guestVerificationCode, setGuestVerificationCode] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <section className="p-4">
@@ -256,7 +268,7 @@ export const CheckOutPage = () => {
                     </label>
                   </div>
 
-                  <div className="">
+                  <div>
                     <CountryStateCity />
                   </div>
 
@@ -330,6 +342,8 @@ export const CheckOutPage = () => {
                       type="email"
                       required
                       placeholder=" "
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
                     />
                     <label
@@ -343,11 +357,22 @@ export const CheckOutPage = () => {
                   <div className="relative mb-4">
                     <input
                       id="loginPassword"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       placeholder=" "
                       className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
                     />
+
+                    <button
+                      type="button"
+                      className="absolute top-1 right-0 cursor-pointer text-3xl"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                    </button>
+
                     <label
                       htmlFor="loginPassword"
                       className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
@@ -357,13 +382,14 @@ export const CheckOutPage = () => {
                   </div>
 
                   <button
+                    disabled={!password || !email}
                     type="submit"
-                    className="my-6 text-center border-2 w-full py-2 rounded-full font-bold bg-[#af4261] text-white hover:bg-black hover:text-white transition-all ease-linear duration-[300ms]"
+                    className="my-6 text-center border-2 w-full py-2 rounded-full font-bold bg-[#af4261] text-white hover:bg-black hover:text-white transition-all ease-linear duration-[300ms] disabled:text-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed"
                   >
                     Login
                   </button>
 
-                  <Link href="#_" className="text-center block underline">
+                  <Link href="/signUp" className="text-center block underline">
                     Don&apos;t have an account&#x3f; Sign Up
                   </Link>
                 </div>

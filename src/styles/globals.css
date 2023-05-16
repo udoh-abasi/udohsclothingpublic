@@ -166,7 +166,8 @@ footer {
 }
 
 /*Style the login field in the checkout section*/
-#loginWrapper {
+#loginWrapper,
+#signWrapper {
   border-top-right-radius: 20%;
   border-top-left-radius: 20%;
 }

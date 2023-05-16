@@ -1,0 +1,33 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-udohsclothsite-dev-171008-authRole",
+      "UnauthRoleArn": "arn:aws:iam::828830516673:role/amplify-udohsclothsite-dev-171008-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::828830516673:role/amplify-udohsclothsite-dev-171008-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-udohsclothsite-dev-171008-deployment",
+      "UnauthRoleName": "amplify-udohsclothsite-dev-171008-unauthRole",
+      "StackName": "amplify-udohsclothsite-dev-171008",
+      "StackId": "arn:aws:cloudformation:eu-north-1:828830516673:stack/amplify-udohsclothsite-dev-171008/a3f251c0-f1a8-11ed-b238-0a190ebedab4",
+      "AmplifyAppId": "d2sda5qniwm7rz"
+    },
+    "categories": {
+      "auth": {
+        "udohsclothsited1aeb656": {
+          "userPoolId": "eu-north-1_4YOQgG1ub",
+          "userPoolName": "udohclothing",
+          "webClientId": "3qsvgflrqnc0oft9gc1ugd30p6",
+          "nativeClientId": "3qsvgflrqnc0oft9gc1ugd30p6",
+          "identityPoolId": "eu-north-1:7d06bafe-0293-444d-87f7-4cdfc9ed8e5e",
+          "identityPoolName": "udohsclothing",
+          "allowUnauthenticatedIdentities": false,
+          "authRoleArn": "arn:aws:iam::828830516673:role/Cognito_udohsclothingAuth_Role",
+          "authRoleName": "Cognito_udohsclothingAuth_Role",
+          "unauthRoleArn": "arn:aws:iam::828830516673:role/Cognito_udohsclothingUnauth_Role",
+          "unauthRoleName": "Cognito_udohsclothingUnauth_Role",
+          "googleClientId": "19429559536-5ok6h6tamjo2ta04m2fakbpc3ll04ugo.apps.googleusercontent.com"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "auth": {
+    "udohsclothsited1aeb656": {
+      "customAuth": false,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "serviceType": "imported"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_auth_udohsclothsited1aeb656_allowUnauthenticatedIdentities": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "udohsclothsited1aeb656"
+        }
+      ]
+    },
+    "AMPLIFY_auth_udohsclothsited1aeb656_authRoleArn": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "udohsclothsited1aeb656"
+        }
+      ]
+    },
+    "AMPLIFY_auth_udohsclothsited1aeb656_authRoleName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "udohsclothsited1aeb656"
+        }
+      ]
+    },
+    "AMPLIFY_auth_udohsclothsited1aeb656_googleClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "udohsclothsited1aeb656"
+        }
+      ]
+    },
+    "AMPLIFY_auth_udohsclothsited1aeb656_identityPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "udohsclothsited1aeb656"
+        }
+      ]
+    },
+    "AMPLIFY_auth_udohsclothsited1aeb656_identityPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "udohsclothsited1aeb656"
+        }
+      ]
+    },
+    "AMPLIFY_auth_udohsclothsited1aeb656_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "udohsclothsited1aeb656"
+        }
+      ]
+    },
+    "AMPLIFY_auth_udohsclothsited1aeb656_unauthRoleArn": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "udohsclothsited1aeb656"
+        }
+      ]
+    },
+    "AMPLIFY_auth_udohsclothsited1aeb656_unauthRoleName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "udohsclothsited1aeb656"
+        }
+      ]
+    },
+    "AMPLIFY_auth_udohsclothsited1aeb656_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "udohsclothsited1aeb656"
+        }
+      ]
+    },
+    "AMPLIFY_auth_udohsclothsited1aeb656_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "udohsclothsited1aeb656"
+        }
+      ]
+    },
+    "AMPLIFY_auth_udohsclothsited1aeb656_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "udohsclothsited1aeb656"
+        }
+      ]
+    }
+  }
+}

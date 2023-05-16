@@ -1,4 +1,6 @@
+import { countryStateCityAction } from "@/myReduxFiles/actions";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 import Select from "react-select";
 
@@ -7,6 +9,11 @@ export const CountryStateCity = () => {
   const [countryValue, setCountryValue] = useState("");
   const [stateValue, setStateValue] = useState("");
   const [cityValue, setCityValue] = useState("");
+
+  // These useStates are added as a hack to make country, state and cities field show when an option is selected
+  const [countryValueForHack, setCountryValueForHack] = useState("");
+  const [stateValueForHack, setStateValueForHack] = useState("");
+  const [cityValueForHack, setCityValueForHack] = useState("");
 
   // Use this to set up when the options are loading from the server
   const [countryIsLoading, setCountryIsLoading] = useState(false);
@@ -35,6 +42,7 @@ export const CountryStateCity = () => {
   // This is the fetch() function, we will use to send all three requests (for country, state and city)
   const fetchData = async (theURL, onSetData, onSetIsLoading) => {
     onSetIsLoading(true);
+    onSetData([]);
     try {
       const response = await fetch(theURL);
       if (response.ok) {
@@ -78,8 +86,8 @@ export const CountryStateCity = () => {
   // When a country is selected in the dropdown, run this function to populate the state's select field
   useEffect(() => {
     const onChangeCountry = () => {
-      setStateValue(null);
-      setCityValue(null);
+      setStateValue("");
+      setCityValue("");
       const theStateOption = state.map((eachState) => ({
         value: eachState.iso2,
         label: eachState.name,
@@ -103,7 +111,7 @@ export const CountryStateCity = () => {
   // When a State is selected in the dropdown, run this function to populate the cities dropdown
   useEffect(() => {
     const onChangeState = () => {
-      setCityValue(null); // This clears the city's select field
+      setCityValue(""); // This clears the city's select field
       const theCityOption = cities.map((eachCity) => ({
         value: eachCity.id,
         label: eachCity.name,
@@ -116,6 +124,18 @@ export const CountryStateCity = () => {
       onChangeState();
     }
   }, [stateCode, cities]);
+
+  // This useEffect dispatches an action that fills up the redux store with the current country, state and city values
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(
+      countryStateCityAction({
+        country: countryValueForHack,
+        state: stateValueForHack,
+        city: cityValueForHack,
+      })
+    );
+  }, [dispatch, countryValueForHack, stateValueForHack, cityValueForHack]);
 
   return (
     <>
@@ -132,10 +152,11 @@ export const CountryStateCity = () => {
           options={countryOptions}
           required
           isSearchable
-          value={countryValue}
-          onChange={(value) => {
-            setCountryCode(value.value);
-            setCountryValue(value.name);
+          value={countryValue} // NOTE: As a hack, I used this (NOTE: countryValue will always be undefined)
+          onChange={(option) => {
+            setCountryCode(option.value);
+            setCountryValue(undefined); // NOTE: So, I set the value to undefined, so that the label of that <option> will show
+            setCountryValueForHack(option.label);
           }}
           placeholder="Select Country..."
           isLoading={countryIsLoading}
@@ -158,9 +179,10 @@ export const CountryStateCity = () => {
           required
           isSearchable
           value={stateValue}
-          onChange={(value) => {
-            setStateCode(value.value);
-            setStateValue(value.name);
+          onChange={(option) => {
+            setStateCode(option.value);
+            setStateValue(undefined);
+            setStateValueForHack(option.label);
           }}
           placeholder="Select State..."
           isDisabled={!countryCode}
@@ -184,9 +206,9 @@ export const CountryStateCity = () => {
           required
           isSearchable
           value={cityValue}
-          onChange={(value) => {
-            console.log(value);
-            setCityValue(value.name);
+          onChange={(option) => {
+            setCityValue(undefined);
+            setCityValueForHack(option.label);
           }}
           placeholder="Select City..."
           isDisabled={!stateCode}
