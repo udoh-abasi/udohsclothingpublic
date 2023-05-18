@@ -1,5 +1,6 @@
 import { Amplify, Auth } from "aws-amplify";
 import awsconfig from "../aws-exports"; // NOTE: This is the location that has the file 'aws-exports.js'
+import { useUser } from "@/customHooks/useUser";
 
 Amplify.configure(awsconfig);
 
@@ -100,11 +101,23 @@ export const resendSignUpConfirmationCode = async (
 
 //LOGIN CODE
 
-export const logIn = async (email, password, setErrorMessage, navigate) => {
+export const logIn = async (
+  email,
+  password,
+  setErrorMessage,
+  setLoading,
+  router
+) => {
   try {
-    const user = await Auth.signIn(email, password);
-    navigate(`/`);
+    setLoading(true);
+    setErrorMessage("");
+
+    const { attributes } = await Auth.signIn(email, password);
+    setLoading(false);
+
+    router.push("/payment-and-summary");
   } catch (e) {
+    setLoading(false);
     setErrorMessage("Incorrect username or password");
     console.log("Error Signing In", e);
   }
@@ -125,41 +138,71 @@ export const forgotPassword = {
   //SEND FORGOT PASSWORD CODE
   sendForgotPasswordCode: async (
     email,
-    navigate,
     setSuccess,
-    setErrorMessage
+    setErrorMessage,
+    isLoading
   ) => {
+    setErrorMessage("");
+    isLoading(true);
+
+    // Check if the user exist. We do this with a workaround
+    // So, we used the signUp because it checks and returns an error if the user exist.
+    // We also used an obviously incorrect password that won't be accepted, so no user will ever be signed up through this process
     try {
-      await Auth.forgotPassword(email).then((data) => console.log(data)); // NOTE: This line of code can also be used to resend the six digit code for 'forgot password'
-      setSuccess(true);
-      setTimeout(() => {
-        navigate(`/reset-password?email=${encodeURIComponent(email)}`);
-      }, 3000);
+      await Auth.signUp(email, "123"); // This line will definitely throw an error
     } catch (error) {
-      console.log(
-        "Error sending forgot password confirmation code error",
-        error
-      );
-      setErrorMessage(error.message);
+      console.log(error);
+      switch (error.name) {
+        case "UsernameExistsException": {
+          // This will then mean the user is signed up, and exist
+          try {
+            await Auth.forgotPassword(email).then((data) => console.log(data)); // NOTE: This line of code can also be used to resend the six digit code for 'forgot password'
+            setSuccess(true);
+            isLoading(false);
+          } catch (error) {
+            isLoading(false);
+            console.log(
+              "Error sending forgot password confirmation code error",
+              error
+            );
+            setErrorMessage(error.message);
+          }
+          return;
+        }
+
+        default: {
+          isLoading(false);
+          setErrorMessage("This account does not exist. Sign in instead");
+          return;
+        }
+      }
     }
   },
-
   // CHANGE THE USER'S PASSWORD TO THE NEW PASSWORD IF CONFIRMATION CODE IS CORRECT
   forgotPasswordSubmit: async (
     email,
     code,
     newPassword,
     setIsSuccess,
-    setIsFailure
+    setShowEmailForm,
+    setErrorMessage,
+    setForgotPasswordLoading
   ) => {
     try {
+      setErrorMessage("");
+      setForgotPasswordLoading(true);
       await Auth.forgotPasswordSubmit(email, code, newPassword).then((data) =>
         console.log(data)
       );
+      setShowEmailForm(false);
       setIsSuccess(true);
+      setForgotPasswordLoading(false);
     } catch (error) {
       console.log("Error when submitting forgot password code", error);
-      setIsFailure(true);
+      setErrorMessage(
+        "There was an error. Please check the code and the password and try again, or try again after sometime"
+      );
+      setForgotPasswordLoading(false);
     }
   },
 };

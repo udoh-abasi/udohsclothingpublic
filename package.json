@@ -12,6 +12,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@smakss/react-scroll-direction": "^1.0.5",
     "autoprefixer": "10.4.14",
+    "body-parser": "^1.20.2",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "mongodb": "^5.4.0",

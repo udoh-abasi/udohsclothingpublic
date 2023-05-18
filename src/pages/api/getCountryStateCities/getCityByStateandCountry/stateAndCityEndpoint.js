@@ -19,7 +19,7 @@ const GetStateBandCity = async (req, res) => {
       res.status(200).json({ data });
     } else {
       console.log(response.status);
-      res.status(404).json({ message: "An error occured" });
+      res.status(404).json({ message: "An error occurred" });
     }
   } catch (e) {
     console.log(e);

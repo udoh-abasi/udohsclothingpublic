@@ -1,8 +1,8 @@
-export const Loader = () => (
+export const Loader = ({ textColor, fillColor }) => (
   <div role="status" className="flex justify-center">
     <svg
       aria-hidden="true"
-      className="w-6 h-6 mr-2 animate-spin text-white fill-black"
+      className={`w-6 h-6 mr-2 animate-spin ${textColor} ${fillColor}`}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -16,6 +16,6 @@ export const Loader = () => (
         fill="currentFill"
       />
     </svg>
-    <span class="sr-only">Loading...</span>
+    <span className="sr-only">Loading...</span>
   </div>
 );

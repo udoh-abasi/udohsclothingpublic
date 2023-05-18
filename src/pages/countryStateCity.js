@@ -62,7 +62,7 @@ export const CountryStateCity = () => {
 
   // On first load, this will run, and send a request to get all the countries in the world, and populate the select field
   useEffect(() => {
-    // fetchData(getCountryURL, setCountry, setCountryIsLoading);
+    fetchData(getCountryURL, setCountry, setCountryIsLoading);
   }, []);
 
   // When we get the country data, these useEffect will run and populate the <options> of the country's <Select />

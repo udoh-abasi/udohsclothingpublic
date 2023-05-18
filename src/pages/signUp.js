@@ -17,6 +17,7 @@ import {
 } from "@/util/awsFuntions";
 import { useUser } from "@/customHooks/useUser";
 import { Loader } from "@/util/Loader";
+import { useRouter } from "next/router";
 
 const SignUp = () => {
   const countryStateCity = useSelector(countryStateCitySelector);
@@ -68,6 +69,13 @@ const SignUp = () => {
   // Checks if the resend password AWS function is currently loading
   const [resendSignUpCodeLoading, setResendSignUpCodeLoading] = useState(false);
 
+  const [name, setName] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const [addNewUserToDBError, setAddNewUserToDBError] = useState("");
+  const [addNewUserToDBIsLoading, setAddNewUserToDBIsLoading] = useState(false);
+
   // This function manages the regular expression, and show what the user has ticked and what they have not
   const passwordRegularExpressionCheck = (e) => {
     setPassword(e.target.value);
@@ -103,6 +111,8 @@ const SignUp = () => {
     }
   };
 
+  // This useEffect checks if the password and the confirmPassword is the same
+  // But it will only set the passwordMatch to false if we have typed something into the confirmPassword field
   useEffect(() => {
     if (confirmPassword !== password && confirmPassword) {
       setPasswordMatch(false);
@@ -112,7 +122,33 @@ const SignUp = () => {
   }, [confirmPassword, password]);
 
   const user = useUser();
-  console.log("User is", user);
+
+  const router = useRouter();
+
+  const addNewUser = async (theData) => {
+    try {
+      setAddNewUserToDBIsLoading(true);
+      const response = await fetch("/api/addNewUserInfo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(theData),
+      });
+
+      if (response.ok) {
+        router.push("/checkout");
+      } else {
+        setAddNewUserToDBError(
+          "There was a problem adding your info to the database"
+        );
+        setAddNewUserToDBIsLoading(false);
+      }
+    } catch (e) {
+      console.log("Error adding new user", e);
+      setAddNewUserToDBIsLoading(false);
+    }
+  };
 
   return (
     <div className="p-4 flex justify-center">
@@ -126,7 +162,20 @@ const SignUp = () => {
           id="signWrapper"
         >
           {showSignUpField && (
-            <form onSubmit={(e) => e.preventDefault()} className="">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                signUp(
+                  email,
+                  password,
+                  setErrorMessage,
+                  setShowVerificationCodeField,
+                  setSignedUpUserEmail,
+                  setHideError,
+                  setSignUpLoading
+                );
+              }}
+            >
               <div
                 className={`text-center text-red-600 font-bold mt-[-20px] pb-8 px-3 relative ${
                   hideError && "hidden"
@@ -319,19 +368,13 @@ const SignUp = () => {
                 type="submit"
                 className="my-6 text-center border-2 w-full py-2 rounded-full font-bold bg-[#af4261] text-white hover:bg-black hover:text-white transition-all ease-linear duration-[300ms] disabled:text-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed"
                 disabled={!password || !email || password !== confirmPassword}
-                onClick={() =>
-                  signUp(
-                    email,
-                    password,
-                    setErrorMessage,
-                    setShowVerificationCodeField,
-                    setSignedUpUserEmail,
-                    setHideError,
-                    setSignUpLoading
-                  )
-                }
               >
-                {signUpLoading && <Loader />}
+                {signUpLoading && (
+                  <Loader
+                    textColor={"text-white"}
+                    fillColor={"fill-blue-500"}
+                  />
+                )}
 
                 {!signUpLoading && <span>Sign Up</span>}
               </button>
@@ -343,7 +386,20 @@ const SignUp = () => {
           )}
 
           {showVerificationCodeField && (
-            <form onSubmit={(e) => e.preventDefault()} className="pb-8 pt-3 ">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                confirmSignUpCode(
+                  email,
+                  verificationCode,
+                  setShowVerificationCodeField,
+                  setCodeVerificationFailed,
+                  setShowSignUpField,
+                  setVerifyEmailCodeLoading
+                );
+              }}
+              className="pb-8 pt-3"
+            >
               <fieldset className="border-2 border-black p-6 rounded-3xl">
                 <legend className="ml-3 px-1 font-bold">Verify Email</legend>
 
@@ -387,18 +443,13 @@ const SignUp = () => {
                       type="submit"
                       className="my-6 text-center border-2 w-full py-2 rounded-full font-bold bg-green-500 text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms] disabled:text-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed"
                       disabled={!verificationCode}
-                      onClick={() => {
-                        confirmSignUpCode(
-                          email,
-                          verificationCode,
-                          setShowVerificationCodeField,
-                          setCodeVerificationFailed,
-                          setShowSignUpField,
-                          setVerifyEmailCodeLoading
-                        );
-                      }}
                     >
-                      {verifyEmailCodeLoading && <Loader />}
+                      {verifyEmailCodeLoading && (
+                        <Loader
+                          textColor={"text-white"}
+                          fillColor={"fill-black"}
+                        />
+                      )}
 
                       {!verifyEmailCodeLoading && <span>Submit Code </span>}
                     </button>
@@ -413,7 +464,12 @@ const SignUp = () => {
                         );
                       }}
                     >
-                      {resendSignUpCodeLoading === true && <Loader />}
+                      {resendSignUpCodeLoading === true && (
+                        <Loader
+                          textColor={"text-white"}
+                          fillColor={"fill-black"}
+                        />
+                      )}
                       {resendSignUpCodeLoading === false && "Resend Code"}
                       {resendSignUpCodeLoading === "successful" && (
                         <span className="flex justify-center items-center">
@@ -438,13 +494,37 @@ const SignUp = () => {
           )}
 
           {showVerificationCodeField === "successful" && (
-            <form>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+
+                const dbData = {
+                  user,
+                  data: {
+                    name,
+                    phoneNumber,
+                    streetAddress,
+                    ...countryStateCity,
+                  },
+                };
+
+                addNewUser(dbData);
+              }}
+            >
+              {addNewUserToDBError && (
+                <p className="text-red-500 mb-4 text-center">
+                  {addNewUserToDBError}
+                </p>
+              )}
+
               <div className="mb-2 relative">
                 <input
                   id="name"
                   type="text"
                   required
                   placeholder=" "
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
                 />
 
@@ -466,6 +546,8 @@ const SignUp = () => {
                   type="text"
                   required
                   placeholder=" "
+                  value={streetAddress}
+                  onChange={(e) => setStreetAddress(e.target.value)}
                   className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
                 />
 
@@ -483,6 +565,8 @@ const SignUp = () => {
                   type="text"
                   required
                   placeholder=" "
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                   className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
                 />
 
@@ -496,7 +580,8 @@ const SignUp = () => {
 
               <button
                 type="submit"
-                className="relative flex items-center px-12 py-1 overflow-hidden text-lg font-medium text-white dark:text-white border-2 rounded-full group w-full justify-center"
+                className="relative flex items-center px-12 py-1 overflow-hidden text-lg font-medium text-white dark:text-white border-2 rounded-full group w-full justify-center disabled:text-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed"
+                disabled={!name || !phoneNumber || !streetAddress}
               >
                 <span className="absolute left-0 block w-full transition-all bg-[#af4261] opacity-100 h-full top-0"></span>
                 <span className="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
@@ -515,7 +600,12 @@ const SignUp = () => {
                     ></path>
                   </svg>
                 </span>
-                <span className="relative">Submit</span>
+
+                {addNewUserToDBIsLoading ? (
+                  <Loader textColor={"text-white"} fillColor={"fill-black"} />
+                ) : (
+                  <span className="relative">Submit</span>
+                )}
               </button>
             </form>
           )}

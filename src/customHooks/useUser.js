@@ -4,8 +4,8 @@ import { Auth, Hub } from "aws-amplify";
 export const useUser = () => {
   const [user, setUser] = useState(async () => {
     try {
-      const { username } = await Auth.currentAuthenticatedUser();
-      return username;
+      const { attributes } = await Auth.currentAuthenticatedUser();
+      return attributes.email;
     } catch (e) {
       return null;
     }
@@ -14,8 +14,8 @@ export const useUser = () => {
   useEffect(() => {
     const updateUser = async (authState) => {
       try {
-        const { username } = await Auth.currentAuthenticatedUser(); // This 'currentAuthenticatedUser' returns an object, which has the user's details if the user is logged in
-        setUser(username);
+        const { attributes } = await Auth.currentAuthenticatedUser(); // This 'currentAuthenticatedUser' returns an object, which has the user's details if the user is logged in
+        setUser(attributes.email);
       } catch (e) {
         setUser(null);
       }

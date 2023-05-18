@@ -14,6 +14,10 @@ import { useSelector } from "react-redux";
 import { CountryStateCity } from "./countryStateCity";
 import Link from "next/link";
 import { getNumberOfEachItemInCart } from "@/util/getNumberOfEachItemInCart";
+import { logIn } from "@/util/awsFuntions";
+import { Loader } from "@/util/Loader";
+import { useRouter } from "next/router";
+import { useUser } from "@/customHooks/useUser";
 
 export const CheckOutPage = () => {
   // Get Items in cart
@@ -45,6 +49,15 @@ export const CheckOutPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [loginError, setLoginError] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
+
+  const router = useRouter();
+
+  const loginClicked = async () => {
+    await logIn(email, password, setLoginError, setLoginLoading, router);
+  };
 
   return (
     <section className="p-4">
@@ -325,7 +338,10 @@ export const CheckOutPage = () => {
               </div>
             ) : (
               <form
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  loginClicked();
+                }}
                 className="bg-[#af4261] rounded-2xl shadow-[0px_5px_15px_rgba(0,0,0,0.35)] min-[650px]:m-8"
               >
                 <h3 className="text-center my-4 text-2xl font-bold text-white pt-4">
@@ -336,6 +352,12 @@ export const CheckOutPage = () => {
                   className="bg-white text-black py-16 rounded-2xl p-2 min-[490px]:px-8"
                   id="loginWrapper"
                 >
+                  {loginError && (
+                    <p className="text-red-500 text-center mb-4">
+                      {loginError}
+                    </p>
+                  )}
+
                   <div className="mb-8 relative">
                     <input
                       id="loginEmail"
@@ -386,7 +408,24 @@ export const CheckOutPage = () => {
                     type="submit"
                     className="my-6 text-center border-2 w-full py-2 rounded-full font-bold bg-[#af4261] text-white hover:bg-black hover:text-white transition-all ease-linear duration-[300ms] disabled:text-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed"
                   >
-                    Login
+                    {loginLoading ? (
+                      <Loader
+                        textColor={"text-white"}
+                        fillColor={"fill-black"}
+                      />
+                    ) : (
+                      "Login"
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    className="text-center border-2 w-[150px] py-2 mb-4 rounded-full font-bold bg-black text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms]"
+                    onClick={() => {
+                      router.push("/forgot-password");
+                    }}
+                  >
+                    Forgot Password
                   </button>
 
                   <Link href="/signUp" className="text-center block underline">
