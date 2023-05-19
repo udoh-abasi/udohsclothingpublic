@@ -10,3 +10,7 @@ export const countryStateCityAction = createAction(
     return { payload: countryStateCityObject };
   }
 );
+
+export const guestDataAction = createAction("guestData", (guestData) => {
+  return { payload: guestData };
+});

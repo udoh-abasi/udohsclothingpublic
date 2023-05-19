@@ -1,4 +1,8 @@
-import { cartSelector } from "@/myReduxFiles/selectors";
+import {
+  cartSelector,
+  countryStateCitySelector,
+  guestDataSelector,
+} from "@/myReduxFiles/selectors";
 import { useEffect, useState } from "react";
 import {
   AiFillEye,
@@ -10,7 +14,7 @@ import {
   MdCheckBoxOutlineBlank,
 } from "react-icons/md";
 import { BsCheck2Circle, BsCheck2Square } from "react-icons/bs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CountryStateCity } from "./countryStateCity";
 import Link from "next/link";
 import { getNumberOfEachItemInCart } from "@/util/getNumberOfEachItemInCart";
@@ -18,8 +22,11 @@ import { logIn } from "@/util/awsFuntions";
 import { Loader } from "@/util/Loader";
 import { useRouter } from "next/router";
 import { useUser } from "@/customHooks/useUser";
+import { IoMdCheckmarkCircle } from "react-icons/io";
+import { guestDataAction } from "@/myReduxFiles/actions";
 
 export const CheckOutPage = () => {
+  const countryStateCity = useSelector(countryStateCitySelector);
   // Get Items in cart
   const itemsInCart = useSelector(cartSelector);
 
@@ -45,6 +52,40 @@ export const CheckOutPage = () => {
   const [guestEmail, setGuestEmail] = useState("");
   const [guestVerificationCode, setGuestVerificationCode] = useState("");
 
+  // This is where we store the code we will be sending to the client via email
+  // The code was generated in the backend
+  const [guestCodeInEmailSent, setGuestCodeInEmailSent] = useState("");
+
+  const [guestErrorWithEmailSending, setGuestErrorWithEmailSending] =
+    useState("");
+
+  const [guestErrorWithCodeVerification, setGuestErrorWithCodeVerification] =
+    useState("");
+
+  const [guestEmailSendingLoading, setGuestEmailSendingLoading] =
+    useState(false);
+
+  // This can be 'email', 'verify' or 'success'
+  const [guestVerificationStatus, setGuestVerificationStatus] =
+    useState("email");
+
+  const [codeSent, setCodeSent] = useState(false);
+
+  // This function runs when the button is clicked to check if the code we emailed the user is correct
+  const verifyGuestCode = () => {
+    if (guestVerificationCode === guestCodeInEmailSent) {
+      setGuestVerificationStatus("success");
+    } else {
+      setGuestErrorWithCodeVerification(
+        "The code is different from what we have in our database. Please check and try again"
+      );
+    }
+  };
+
+  const [name, setName] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   const [showPassword, setShowPassword] = useState(false);
 
   const [email, setEmail] = useState("");
@@ -55,9 +96,60 @@ export const CheckOutPage = () => {
 
   const router = useRouter();
 
+  // This function runs when the login button is clicked
   const loginClicked = async () => {
     await logIn(email, password, setLoginError, setLoginLoading, router);
   };
+
+  // This function runs when the guest's verify Email button is clicked, and it sends the code
+  const sendCodeToGuest = async () => {
+    setGuestEmailSendingLoading(true);
+    const theBody = { to: guestEmail };
+    try {
+      const response = await fetch("/api/sendEmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(theBody),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setGuestCodeInEmailSent(data.code);
+        setGuestEmailSendingLoading(false);
+
+        setCodeSent(true);
+        setTimeout(() => {
+          setCodeSent(false);
+        }, 5000);
+
+        setGuestVerificationStatus("verify");
+      } else {
+        setGuestErrorWithEmailSending(
+          "There was an error while sending the code. Please try again"
+        );
+        setGuestEmailSendingLoading(false);
+      }
+    } catch (e) {
+      console.log(e);
+      setGuestEmailSendingLoading(false);
+      setGuestErrorWithEmailSending(
+        "There was an error while sending the code. Please try again"
+      );
+    }
+  };
+
+  const dispatch = useDispatch();
+  // When the 'NEXT' button is clicked, this function executes (on Form Submit)
+  const NextButtonClicked = (guestData) => {
+    dispatch(guestDataAction(guestData));
+  };
+
+  const guestData = useSelector(guestDataSelector);
+  useEffect(() => {
+    console.log("Guest Data", guestData);
+  }, [guestData]);
 
   return (
     <section className="p-4">
@@ -160,181 +252,294 @@ export const CheckOutPage = () => {
                   Checkout as Guest
                 </h3>
 
-                <form onSubmit={(e) => e.preventDefault()} className="pb-6">
-                  <div className="flex flex-col-reverse pb-4">
-                    <input
-                      type="email"
-                      id="guestEmail"
-                      required
-                      placeholder=" "
-                      className="dark:text-black block w-full rounded-xl p-1 border-black border-2"
-                    />
-                    <label htmlFor="guestEmail" className="block ">
-                      Email
-                    </label>
-                  </div>
-
-                  <div className="pb-4 relative ">
-                    <div className="absolute text-xl top-1 text-black dark:text-white">
-                      {keepMeUpToDate ? (
-                        <BsCheck2Square />
-                      ) : (
-                        <MdCheckBoxOutlineBlank />
-                      )}
-                    </div>
-
-                    <input
-                      type="checkbox"
-                      id="keepMeUpToDate"
-                      required
-                      defaultChecked
-                      className="w-[20px] h-[20px] opacity-0"
-                      onChange={() => setKeepMeUpToDate(!keepMeUpToDate)}
-                    />
-
-                    <label htmlFor="keepMeUpToDate" className="text-sm ml-2">
-                      Keep me up to date on new and exciting offers
-                    </label>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="relative flex items-center px-12 py-1 overflow-hidden text-lg font-medium text-white dark:text-white border-2 rounded-full group w-full justify-center"
+                {(guestVerificationStatus === "email" ||
+                  guestVerificationStatus === "verify") && (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      sendCodeToGuest();
+                    }}
+                    className="pb-6"
                   >
-                    <span className="absolute left-0 block w-full transition-all bg-[#af4261] opacity-100 h-full top-0"></span>
-                    <span className="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M14 5l7 7m0 0l-7 7m7-7H3"
-                        ></path>
-                      </svg>
-                    </span>
-                    <span className="relative">Verify Email</span>
-                  </button>
-                </form>
+                    {guestErrorWithEmailSending && (
+                      <p className="text-red-500 text-center text-sm py-2">
+                        {guestErrorWithEmailSending}
+                      </p>
+                    )}
 
-                <form
-                  onSubmit={(e) => e.preventDefault()}
-                  className="pb-8 pt-3"
-                >
-                  <fieldset className="border-2 border-black dark:border-white p-6 rounded-3xl">
-                    <legend className="ml-3 px-1 font-bold">
-                      Verify Email
-                    </legend>
-
-                    <p className="pb-3">
-                      To verify that this is your email, please enter the
-                      verification code sent to{" "}
-                      <span className="underline "> udoh@gmail.com</span>
-                    </p>
-
-                    <div className="flex flex-col-reverse">
+                    <div className="flex flex-col-reverse pb-4">
                       <input
-                        type="text"
-                        id="verifiCationCode"
+                        type="email"
+                        id="guestEmail"
                         required
+                        value={guestEmail}
+                        onChange={(e) => setGuestEmail(e.target.value)}
                         placeholder=" "
                         className="dark:text-black block w-full rounded-xl p-1 border-black border-2"
                       />
+                      <label htmlFor="guestEmail" className="block ">
+                        Email
+                      </label>
+                    </div>
 
-                      <label htmlFor="verifiCationCode" className="block">
-                        Verification code
+                    <div className="pb-2 relative ">
+                      <div className="absolute text-xl top-1 text-black dark:text-white">
+                        {keepMeUpToDate ? (
+                          <BsCheck2Square />
+                        ) : (
+                          <MdCheckBoxOutlineBlank />
+                        )}
+                      </div>
+
+                      <input
+                        type="checkbox"
+                        id="keepMeUpToDate"
+                        required
+                        defaultChecked
+                        className="w-[20px] h-[20px] opacity-0"
+                        onChange={() => setKeepMeUpToDate(!keepMeUpToDate)}
+                      />
+
+                      <label htmlFor="keepMeUpToDate" className="text-sm ml-2">
+                        Keep me up to date on new and exciting offers
+                      </label>
+                    </div>
+                    <p
+                      className={`text-center text-green-500 font-bold pb-2 flex items-center justify-center ${
+                        codeSent ? "visible" : "invisible"
+                      }`}
+                    >
+                      Verification code sent{" "}
+                      <IoMdCheckmarkCircle className="ml-2 text-lg" />
+                    </p>
+
+                    <button
+                      type="submit"
+                      disabled={guestEmailSendingLoading ? true : !guestEmail}
+                      className="relative flex items-center px-12 py-1 overflow-hidden text-lg font-medium text-white dark:text-white border-2 rounded-full group w-full justify-center disabled:text-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed"
+                    >
+                      <span className="absolute left-0 block w-full transition-all bg-[#af4261] opacity-100 h-full top-0"></span>
+                      <span className="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M14 5l7 7m0 0l-7 7m7-7H3"
+                          ></path>
+                        </svg>
+                      </span>
+
+                      {guestEmailSendingLoading ? (
+                        <Loader
+                          textColor={"text-white"}
+                          fillColor={"fill-black"}
+                        />
+                      ) : (
+                        <span className="relative">Verify Email</span>
+                      )}
+                    </button>
+                  </form>
+                )}
+
+                {(guestVerificationStatus === "success" ||
+                  guestVerificationStatus === "verify") && (
+                  <form
+                    onSubmit={(e) => e.preventDefault()}
+                    className="pb-8 pt-3"
+                  >
+                    <fieldset className="border-2 border-black dark:border-white p-6 rounded-3xl">
+                      <legend className="ml-3 px-1 font-bold">
+                        Verify Email
+                      </legend>
+
+                      {guestVerificationStatus === "verify" && (
+                        <div>
+                          {guestErrorWithCodeVerification && (
+                            <p className="text-red-500 text-center text-sm py-2">
+                              {guestErrorWithCodeVerification}
+                            </p>
+                          )}
+
+                          <p className="pb-3">
+                            To verify that this is your email, please enter the
+                            verification code sent to{" "}
+                            <span className="underline">{guestEmail}</span>
+                          </p>
+
+                          <div className="flex flex-col-reverse">
+                            <input
+                              type="text"
+                              id="verifiCationCode"
+                              required
+                              autoFocus
+                              value={guestVerificationCode}
+                              onChange={(e) =>
+                                setGuestVerificationCode(e.target.value)
+                              }
+                              placeholder=" "
+                              className="dark:text-black block w-full rounded-xl p-1 border-black border-2"
+                            />
+
+                            <label htmlFor="verifiCationCode" className="block">
+                              Verification code
+                            </label>
+                          </div>
+
+                          <button
+                            type="submit"
+                            onClick={() => {
+                              verifyGuestCode();
+                            }}
+                            className="my-6 text-center border-2 w-full py-2 rounded-full font-bold bg-green-500 text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms]"
+                          >
+                            Submit Code
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => sendCodeToGuest()}
+                            disabled={
+                              guestEmailSendingLoading ? true : !guestEmail
+                            }
+                            className="text-center border-2 w-[150px] py-2 rounded-full font-bold bg-black text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms]"
+                          >
+                            {guestEmailSendingLoading ? (
+                              <Loader
+                                textColor={"text-white"}
+                                fillColor={"fill-black"}
+                              />
+                            ) : (
+                              <span className="relative">Resend Code</span>
+                            )}
+                          </button>
+                        </div>
+                      )}
+
+                      {guestVerificationStatus === "success" && (
+                        <p className="flex flex-col items-center text-center">
+                          <IoMdCheckmarkCircle className="text-4xl text-green-500" />
+                          <span className="min-[580px]:text-2xl">
+                            Email Verified Successfully
+                          </span>
+                        </p>
+                      )}
+                    </fieldset>
+                  </form>
+                )}
+
+                {guestVerificationStatus === "success" && (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+
+                      const guestData = {
+                        user: guestEmail,
+                        data: {
+                          name,
+                          phoneNumber,
+                          streetAddress,
+                          ...countryStateCity,
+                        },
+                      };
+
+                      NextButtonClicked(guestData);
+                    }}
+                  >
+                    <div className="mb-2 relative">
+                      <input
+                        id="name"
+                        type="text"
+                        required
+                        placeholder=" "
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
+                      />
+
+                      <label
+                        htmlFor="name"
+                        className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text dark:peer-placeholder-shown:text-black dark:peer-focus:text-white"
+                      >
+                        Name
+                      </label>
+                    </div>
+
+                    <div className="mb-8">
+                      <CountryStateCity />
+                    </div>
+
+                    <div className="mb-8 relative">
+                      <input
+                        id="streetAddress"
+                        type="text"
+                        required
+                        placeholder=" "
+                        value={streetAddress}
+                        onChange={(e) => setStreetAddress(e.target.value)}
+                        className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
+                      />
+
+                      <label
+                        htmlFor="streetAddress"
+                        className="absolute dark:peer-placeholder-shown:text-black dark:peer-focus:text-white peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
+                      >
+                        Street Address
+                      </label>
+                    </div>
+
+                    <div className="mb-8 relative">
+                      <input
+                        id="phone"
+                        type="text"
+                        required
+                        placeholder=" "
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
+                      />
+
+                      <label
+                        htmlFor="phone"
+                        className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text dark:peer-placeholder-shown:text-black dark:peer-focus:text-white"
+                      >
+                        Phone Number
                       </label>
                     </div>
 
                     <button
                       type="submit"
-                      className="my-6 text-center border-2 w-full py-2 rounded-full font-bold bg-green-500 text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms]"
+                      className="relative flex items-center px-12 py-1 overflow-hidden text-lg font-medium text-white dark:text-white border-2 rounded-full group w-full justify-center disabled:text-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed"
+                      disabled={!name || !phoneNumber || !streetAddress}
                     >
-                      Submit Code
+                      <span className="absolute left-0 block w-full transition-all bg-[#af4261] opacity-100 h-full top-0"></span>
+                      <span className="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M14 5l7 7m0 0l-7 7m7-7H3"
+                          ></path>
+                        </svg>
+                      </span>
+
+                      <span className="relative">NEXT</span>
                     </button>
-
-                    <button
-                      type="submit"
-                      className="text-center border-2 w-[150px] py-2 rounded-full font-bold bg-black text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms]"
-                    >
-                      Resend Code
-                    </button>
-                  </fieldset>
-                </form>
-
-                <form onSubmit={(e) => e.preventDefault()}>
-                  <div className="flex flex-col-reverse mb-4">
-                    <input
-                      type="text"
-                      id="yourName"
-                      required
-                      placeholder=" "
-                      className="dark:text-black block w-full rounded-xl p-1 border-black border-2"
-                    />
-                    <label htmlFor="yourName" className="block">
-                      Name
-                    </label>
-                  </div>
-
-                  <div>
-                    <CountryStateCity />
-                  </div>
-
-                  <div className="flex flex-col-reverse mb-4">
-                    <input
-                      type="text"
-                      id="streetAddress"
-                      required
-                      placeholder=" "
-                      className="dark:text-black block w-full rounded-xl p-1 border-black border-2 "
-                    />
-                    <label htmlFor="streetAddress" className="block">
-                      Street Address
-                    </label>
-                  </div>
-
-                  <div className="flex flex-col-reverse mb-8">
-                    <input
-                      type="text"
-                      id="phoneNumber"
-                      required
-                      placeholder=" "
-                      className="dark:text-black block w-full rounded-xl p-1 border-black border-2"
-                    />
-                    <label htmlFor="phoneNumber" className="block">
-                      Phone Number
-                    </label>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="mb-8 font-bold relative flex items-center px-12 py-2 overflow-hidden text-lg text-white dark:text-white border-2 rounded-full group w-full justify-center "
-                  >
-                    <span className="absolute left-0 block w-full transition-all bg-[#af4261] opacity-100 h-full top-0"></span>
-                    <span className="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M14 5l7 7m0 0l-7 7m7-7H3"
-                        ></path>
-                      </svg>
-                    </span>
-                    <span className="relative">NEXT</span>
-                  </button>
-                </form>
+                  </form>
+                )}
               </div>
             ) : (
               <form
