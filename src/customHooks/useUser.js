@@ -3,22 +3,31 @@ import { Auth, Hub } from "aws-amplify";
 
 export const useUser = () => {
   const [user, setUser] = useState(async () => {
-    try {
-      const { attributes } = await Auth.currentAuthenticatedUser();
-      return attributes.email;
-    } catch (e) {
-      return null;
-    }
+    await Auth.currentSession()
+      .then((data) => {
+        const idToken = data.getIdToken();
+        const email = idToken.payload.email;
+        console.log("The email in useUser is", email);
+        setUser(email);
+      })
+      .catch((err) => {
+        setUser(null);
+        console.log("Error in useUser", err);
+      });
   });
 
+  // This 'CurrentSession' is used here, instead of 'currentAuthenticatedUser', bcoz when you sign in with Google, you will not get the email if you are using 'currentAuthenticatedUser'
   useEffect(() => {
     const updateUser = async (authState) => {
-      try {
-        const { attributes } = await Auth.currentAuthenticatedUser(); // This 'currentAuthenticatedUser' returns an object, which has the user's details if the user is logged in
-        setUser(attributes.email);
-      } catch (e) {
-        setUser(null);
-      }
+      await Auth.currentSession()
+        .then((data) => {
+          const idToken = data.getIdToken();
+          const email = idToken.payload.email;
+          setUser(email);
+        })
+        .catch((err) => {
+          setUser(null);
+        });
     };
 
     const removeListener = Hub.listen("auth", updateUser); // listen for login/signup events

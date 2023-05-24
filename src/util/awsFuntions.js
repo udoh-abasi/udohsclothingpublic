@@ -1,6 +1,7 @@
 import { Amplify, Auth } from "aws-amplify";
 import awsconfig from "../aws-exports"; // NOTE: This is the location that has the file 'aws-exports.js'
-import { useUser } from "@/customHooks/useUser";
+// import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
+import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth/lib/types";
 
 Amplify.configure(awsconfig);
 
@@ -112,7 +113,7 @@ export const logIn = async (
     setLoading(true);
     setErrorMessage("");
 
-    const { attributes } = await Auth.signIn(email, password);
+    await Auth.signIn(email, password);
     setLoading(false);
 
     router.push("/payment-and-summary");
@@ -124,10 +125,9 @@ export const logIn = async (
 };
 
 // SIGN OUT
-export const signOut = async (navigate) => {
+export const signOut = async () => {
   try {
     await Auth.signOut();
-    navigate("/login");
   } catch (e) {
     console.log("Error Signing out", e);
   }
@@ -205,4 +205,16 @@ export const forgotPassword = {
       setForgotPasswordLoading(false);
     }
   },
+};
+
+// Sign in with Google
+// NOTE: When setting up the AWS, set google's email_verified to be equal to cognito's email_verified. This will ensure that the user is properly logged in after they do 'sign up with email'
+export const signInWithGoogle = async () => {
+  try {
+    await Auth.federatedSignIn({
+      provider: CognitoHostedUIIdentityProvider.Google,
+    });
+  } catch (error) {
+    console.log("Error signing in with Google", error);
+  }
 };

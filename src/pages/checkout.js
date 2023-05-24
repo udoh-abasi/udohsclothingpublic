@@ -17,16 +17,18 @@ import { BsCheck2Circle, BsCheck2Square } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { CountryStateCity } from "./countryStateCity";
 import Link from "next/link";
-import { getNumberOfEachItemInCart } from "@/util/getNumberOfEachItemInCart";
 import { logIn } from "@/util/awsFuntions";
 import { Loader } from "@/util/Loader";
 import { useRouter } from "next/router";
 import { useUser } from "@/customHooks/useUser";
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import { guestDataAction } from "@/myReduxFiles/actions";
+import { CartItemsToDisplayByTheSide } from "./CartItemsToDisplayByTheSide";
+import { SignUpWithGoogle } from "./SignupWithGoogle";
 
 export const CheckOutPage = () => {
   const countryStateCity = useSelector(countryStateCitySelector);
+
   // Get Items in cart
   const itemsInCart = useSelector(cartSelector);
 
@@ -38,16 +40,6 @@ export const CheckOutPage = () => {
 
   const [checkoutOption, setCheckoutOption] = useState("login");
   const [keepMeUpToDate, setKeepMeUpToDate] = useState(true);
-
-  // Get and store the map() for each items in the cart, for display by the right hand side on bigger screens
-  const [mappedItemsInCart, setMappedItemsInCart] = useState(null);
-
-  useEffect(() => {
-    const result = getNumberOfEachItemInCart(itemsInCart);
-    setMappedItemsInCart(result);
-  }, [itemsInCart]);
-
-  const theCartItems = [];
 
   const [guestEmail, setGuestEmail] = useState("");
   const [guestVerificationCode, setGuestVerificationCode] = useState("");
@@ -636,75 +628,19 @@ export const CheckOutPage = () => {
                   <Link href="/signUp" className="text-center block underline">
                     Don&apos;t have an account&#x3f; Sign Up
                   </Link>
+
+                  <div className="min-[730px]:flex justify-center min-[730px]:overflow-hidden">
+                    <div className="min-[730px]:max-w-[300px]">
+                      <SignUpWithGoogle />
+                    </div>
+                  </div>
                 </div>
               </form>
             )}
           </section>
 
           <section className="hidden min-[730px]:block">
-            <div className="flex justify-between text-xl border-b-2 py-3 border-b-black dark:border-b-white">
-              <div className="font-bold">
-                <p>Estimated Total</p>
-                <p className="text-[#af4261] dark:text-[#f3ec78]">
-                  $&nbsp;{priceReducer.toFixed(2)}
-                </p>
-              </div>
-
-              <div>
-                <button
-                  className="block p-3 relative"
-                  onClick={() => {
-                    const cartButton = document.querySelector("#CartButton");
-                    cartButton.click();
-                  }}
-                  title="View your shopping Cart"
-                >
-                  <AiOutlineShoppingCart className="text-4xl" />
-                  <span className="absolute text-base bottom-9 left-8 bg-green-500 rounded-full w-6 h-6 text-center flex items-center justify-center z-[1] pointer-events-none">
-                    {itemsInCart.length}
-                  </span>
-                </button>
-              </div>
-            </div>
-
-            <div>
-              {mappedItemsInCart &&
-                mappedItemsInCart.forEach((value, key) => {
-                  const convertedKey = JSON.parse(key);
-                  const { name, image, price } = convertedKey;
-
-                  theCartItems.push(
-                    <figure
-                      key={name}
-                      className="grid grid-cols-2 gap-2 my-4 shadow-[0px_5px_15px_rgba(0,0,0,0.35)] dark:shadow-[rgba(255,255,255,0.089)_0px_0px_7px_5px]"
-                    >
-                      <picture>
-                        <source srcSet={image} />
-                        <img alt={name} src={image} title={name} />
-                      </picture>
-
-                      <figcaption>
-                        <p className="h-[70px] overflow-hidden">{name}</p>
-                        <p className="my-4">{price}</p>
-                        <p>
-                          Qty:{" "}
-                          <span className="border-2 border-black dark:border-white inline-block w-[50px] text-center">
-                            {value}
-                          </span>
-                        </p>
-                      </figcaption>
-                    </figure>
-                  );
-                })}
-
-              {theCartItems.length === 0 ? (
-                <p className="text-center text-xl text-[#af4261] dark:text-[#f3ec78] my-8">
-                  No item in cart
-                </p>
-              ) : (
-                theCartItems
-              )}
-            </div>
+            <CartItemsToDisplayByTheSide />
           </section>
         </div>
       </div>

@@ -3,6 +3,8 @@ import { BiWorld } from "react-icons/bi";
 import { TbTruckDelivery } from "react-icons/tb";
 
 export const HomeBody = () => {
+  // const user = useUser();
+  // console.log(user);
   return (
     <>
       <HomeMainCarousel />

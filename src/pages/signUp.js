@@ -18,6 +18,7 @@ import {
 import { useUser } from "@/customHooks/useUser";
 import { Loader } from "@/util/Loader";
 import { useRouter } from "next/router";
+import { SignUpWithGoogle } from "./SignupWithGoogle";
 
 const SignUp = () => {
   const countryStateCity = useSelector(countryStateCitySelector);
@@ -382,6 +383,8 @@ const SignUp = () => {
               <Link href="/checkout" className="text-center block underline">
                 Already have an account&#x3f; Login
               </Link>
+
+              <SignUpWithGoogle />
             </form>
           )}
 
