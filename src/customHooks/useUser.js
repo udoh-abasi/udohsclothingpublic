@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { Auth, Hub } from "aws-amplify";
+import { Amplify, Auth, Hub } from "aws-amplify";
+import awsconfig from "../aws-exports";
+Amplify.configure(awsconfig);
 
 export const useUser = () => {
   const [user, setUser] = useState(async () => {

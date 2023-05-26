@@ -2,7 +2,7 @@ import {
   cartSelector,
   countryStateCitySelector,
 } from "@/myReduxFiles/selectors";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   AiFillEye,
   AiFillEyeInvisible,
@@ -23,6 +23,7 @@ import { IoMdCheckmarkCircle } from "react-icons/io";
 import { guestDataAction } from "@/myReduxFiles/actions";
 import { CartItemsToDisplayByTheSide } from "./CartItemsToDisplayByTheSide";
 import { SignUpWithGoogle } from "./SignupWithGoogle";
+import { useUser } from "@/customHooks/useUser";
 
 export const CheckOutPage = () => {
   const countryStateCity = useSelector(countryStateCitySelector);

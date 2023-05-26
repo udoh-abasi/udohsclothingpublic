@@ -1,6 +1,5 @@
 import { Amplify, Auth } from "aws-amplify";
 import awsconfig from "../aws-exports"; // NOTE: This is the location that has the file 'aws-exports.js'
-// import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
 import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth/lib/types";
 
 Amplify.configure(awsconfig);

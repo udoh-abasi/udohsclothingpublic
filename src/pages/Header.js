@@ -14,6 +14,9 @@ import { cartAction } from "@/myReduxFiles/actions";
 import { Cart } from "./cart";
 import { getNumberOfEachItemInCart } from "@/util/getNumberOfEachItemInCart";
 import { IoIosMan, IoIosWoman } from "react-icons/io";
+import { useUser } from "@/customHooks/useUser";
+import { useRouter } from "next/router";
+import { signOut } from "@/util/awsFuntions";
 
 export const Header = () => {
   const [mobileScreenMenu, setMobileScreenMenu] = useState(false);
@@ -64,6 +67,9 @@ export const Header = () => {
     listenToWhenNewNavIsReturned();
   }, [mediumScreenAndAbove]);
 
+  const user = useUser();
+  const router = useRouter();
+
   return (
     <>
       {/* NOTE: FOR BIGGER SCREENS */}
@@ -83,12 +89,12 @@ export const Header = () => {
                 udohs
               </Link>
 
-              <Link
-                href="#"
+              <a
+                href="#hr"
                 className="absolute left-[100px] bottom-0 font-bold border border-r-emerald-700 bg-emerald-700 box rounded-md p-1 text-xs opacity-0 w-0 overflow-hidden h-0 focus:opacity-100 focus:w-auto focus:h-auto"
               >
                 Skip Navigation
-              </Link>
+              </a>
               <nav>
                 <ul className="flex items-center">
                   <div className="hidden md:flex items-center text-sm justify-between font-bold pr-8">
@@ -175,8 +181,34 @@ export const Header = () => {
                     numberOfEachItemInCart={numberOfEachItemInCart}
                   />
 
-                  <li className="px-4 group">
-                    <button>
+                  <li className="px-4 relative group" tabIndex={0}>
+                    <div className="hidden group-hover:block group-focus-within:block absolute p-1 rounded-xl bg-white text-black border-black dark:border-white top-12 right-0">
+                      {true ? (
+                        <>
+                          <p className="text-xs break-words w-[60px] mb-2">
+                            udoh.abasi@gmail.com
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => signOut()}
+                            className="block border-2 w-[60px] rounded-xl leading-5 font-bold bg-black text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms] text-[0.7rem]"
+                          >
+                            Sign Out
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          type="button"
+                          className="block border-2 w-[60px] rounded-xl leading-5 font-bold bg-black text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms] text-[0.7rem]"
+                          onClick={() => {
+                            router.push("/checkout");
+                          }}
+                        >
+                          Login
+                        </button>
+                      )}
+                    </div>
+                    <button type="button" tabIndex={1}>
                       <FaUser className="group-hover:text-[#e2cc50]" />
                     </button>
                   </li>
@@ -243,7 +275,7 @@ export const Header = () => {
               </li>
             </ul>
           </div>
-          <hr className="bg-black h-[7px] dark:bg-white" />
+          <hr className="bg-black h-[7px] dark:bg-white" id="hr" />
         </header>
       ) : (
         // {/* NOTE: FOR SMALLER SCREENS */}
@@ -409,14 +441,41 @@ export const Header = () => {
                   numberOfEachItemInCart={numberOfEachItemInCart}
                 />
               </li>
-              <li>
-                <button className="block py-3">
+              <li className="relative group" tabIndex={0}>
+                <div className="hidden group-hover:block group-focus-within:block absolute p-1 rounded-xl bg-white text-black border-black dark:border-white top-12 right-0">
+                  {true ? (
+                    <>
+                      <p className="text-xs break-words w-[60px] mb-2">
+                        udoh.abasi@gmail.com
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => signOut()}
+                        className="block border-2 w-[60px] rounded-xl leading-5 font-bold bg-black text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms] text-[0.7rem]"
+                      >
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      className="block border-2 w-[60px] rounded-xl leading-5 font-bold bg-black text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms] text-[0.7rem]"
+                      onClick={() => {
+                        router.push("/checkout");
+                      }}
+                    >
+                      Login
+                    </button>
+                  )}
+                </div>
+
+                <button className="block py-3" tabIndex={1}>
                   <FaUser />
                 </button>
               </li>
             </ul>
           </div>
-          <hr className="bg-black h-[7px] dark:bg-white" />
+          <hr className="bg-black h-[7px] dark:bg-white" id="hr" />
         </header>
       )}
     </>

@@ -9,6 +9,7 @@ import {
   BsCreditCard2Back,
   BsCreditCard2FrontFill,
 } from "react-icons/bs";
+import { useUser } from "@/customHooks/useUser";
 
 const PaymentAndSummary = () => {
   const [cardNumber, setCardNumber] = useState("");
