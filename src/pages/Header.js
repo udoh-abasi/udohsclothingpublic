@@ -1,6 +1,6 @@
 import { useMatchMedia } from "@/customHooks/useMatchMedia";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { FaUser } from "react-icons/fa";
+import { FaChild, FaUser } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaWindowClose } from "react-icons/fa";
@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { cartAction } from "@/myReduxFiles/actions";
 import { Cart } from "./cart";
 import { getNumberOfEachItemInCart } from "@/util/getNumberOfEachItemInCart";
+import { IoIosMan, IoIosWoman } from "react-icons/io";
 
 export const Header = () => {
   const [mobileScreenMenu, setMobileScreenMenu] = useState(false);
@@ -34,7 +35,7 @@ export const Header = () => {
     dispatch(cartAction(retrievedCart));
   }, [dispatch]);
 
-  // This useEffect imports and runs a helper function which checks the occurence of each items, in the cart, and returns a Map(), containing an item and how many of it was added to cart
+  // This useEffect imports and runs a helper function which checks the occurrence of each items, in the cart, and returns a Map(), containing an item and how many of it was added to cart
   useEffect(() => {
     const result = getNumberOfEachItemInCart(itemsInCart);
     setNumberOfEachItemInCart(result);
@@ -55,6 +56,8 @@ export const Header = () => {
     theCart.classList.remove("translate-x-[0%]");
 
     document.querySelector("body").classList.remove("menuOpen");
+
+    setMobileScreenMenu(false); // Incase the menu for mobile was open when a new <nav> was returned, this will close it
   };
 
   useEffect(() => {
@@ -284,9 +287,9 @@ export const Header = () => {
                           setMobileScreenMenu(false);
                           addOrRemoveClassToBody();
                         }}
-                        className=" py-4 flex justify-center"
+                        className=" py-4 flex justify-center items-center"
                       >
-                        SHOP MEN
+                        <IoIosMan className="text-xl" /> SHOP MEN
                       </Link>
                     </li>
                     <li className=" border-2 rounded-2xl w-[90%] mb-8">
@@ -296,9 +299,9 @@ export const Header = () => {
                           setMobileScreenMenu(false);
                           addOrRemoveClassToBody();
                         }}
-                        className=" py-4 flex justify-center"
+                        className=" py-4 flex justify-center items-center"
                       >
-                        SHOP WOMEN
+                        <IoIosWoman className="text-xl" /> SHOP WOMEN
                       </Link>
                     </li>
                     <li className=" border-2 rounded-2xl w-[90%] mb-8">
@@ -308,9 +311,9 @@ export const Header = () => {
                           setMobileScreenMenu(false);
                           addOrRemoveClassToBody();
                         }}
-                        className=" py-4 flex justify-center"
+                        className=" py-4 flex justify-center items-center"
                       >
-                        SHOP CHILDREN
+                        <FaChild className="text-lg" /> SHOP CHILDREN
                       </Link>
                     </li>
                     <li className=" border-2 rounded-2xl w-[90%] mb-8">

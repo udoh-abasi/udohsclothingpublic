@@ -632,7 +632,7 @@ export const CheckOutPage = () => {
             )}
           </section>
 
-          <section className="hidden min-[730px]:block">
+          <section className="hidden min-[730px]:block mr-1 max-h-[100vh] overflow-y-auto sticky top-5">
             <CartItemsToDisplayByTheSide />
           </section>
         </div>
