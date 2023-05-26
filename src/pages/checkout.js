@@ -1,7 +1,6 @@
 import {
   cartSelector,
   countryStateCitySelector,
-  guestDataSelector,
 } from "@/myReduxFiles/selectors";
 import { useEffect, useState } from "react";
 import {
@@ -20,7 +19,6 @@ import Link from "next/link";
 import { logIn } from "@/util/awsFuntions";
 import { Loader } from "@/util/Loader";
 import { useRouter } from "next/router";
-import { useUser } from "@/customHooks/useUser";
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import { guestDataAction } from "@/myReduxFiles/actions";
 import { CartItemsToDisplayByTheSide } from "./CartItemsToDisplayByTheSide";
@@ -34,7 +32,7 @@ export const CheckOutPage = () => {
 
   // Get the total Price
   const priceReducer = itemsInCart.reduce((accumulatedVal, currentVal) => {
-    const thePrice = currentVal.price.slice(1);
+    const thePrice = currentVal.price.slice(1); // Take out the dollar sign in front
     return accumulatedVal + Number(thePrice);
   }, 0);
 
@@ -137,11 +135,6 @@ export const CheckOutPage = () => {
   const NextButtonClicked = (guestData) => {
     dispatch(guestDataAction(guestData));
   };
-
-  const guestData = useSelector(guestDataSelector);
-  useEffect(() => {
-    console.log("Guest Data", guestData);
-  }, [guestData]);
 
   return (
     <section className="p-4">
