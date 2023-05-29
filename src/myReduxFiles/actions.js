@@ -22,3 +22,10 @@ export const emailAction = createAction("email", (email) => {
 export const userLoadingAction = createAction("userLoading", (userLoading) => {
   return { payload: userLoading };
 });
+
+export const itemsInCartDuplicateAction = createAction(
+  "itemsInCartDuplicate",
+  (itemsInCartDuplicate) => {
+    return { payload: itemsInCartDuplicate };
+  }
+);

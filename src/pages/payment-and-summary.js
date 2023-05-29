@@ -5,7 +5,7 @@ import {
 } from "@/myReduxFiles/selectors";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CartItemsToDisplayByTheSide } from "./CartItemsToDisplayByTheSide";
 import { MdOutlineRadioButtonUnchecked } from "react-icons/md";
 import {
@@ -17,9 +17,12 @@ import { useUser } from "@/customHooks/useUser";
 import { Loader } from "./Loader";
 import { useRouter } from "next/router";
 import { guestDataSelector } from "@/myReduxFiles/selectors";
+import { IoMdWarning } from "react-icons/io";
+import { itemsInCartDuplicateAction } from "@/myReduxFiles/actions";
 
 const PaymentAndSummary = () => {
   const user = useUser();
+  const dispatch = useDispatch();
 
   const [cardNumber, setCardNumber] = useState("");
   const [nameOnCard, setNameOnCard] = useState("");
@@ -174,6 +177,8 @@ const PaymentAndSummary = () => {
       }
     }
   }, [email, userLoading, router, guestInfo]);
+
+  const [itemsInCartDuplicate, setItemsInCartDuplicate] = useState([]);
 
   return (
     <section>
@@ -508,14 +513,19 @@ const PaymentAndSummary = () => {
                 )}
 
                 {!itemsInCart.length && (
-                  <p className="text-center mb-3 text-red-500 text-xs font-bold">
-                    To proceed, kindly add at least one item in cart
+                  <p className="flex justify-center items-center mb-3 text-red-500 text-xs font-bold">
+                    <IoMdWarning className="text-lg" /> To proceed, kindly add
+                    at least one item in cart
                   </p>
                 )}
 
                 <button
                   type="submit"
                   disabled={!itemsInCart.length}
+                  onClick={() => {
+                    dispatch(itemsInCartDuplicateAction(itemsInCart));
+                    router.push("/checkoutSuccess");
+                  }}
                   className="relative flex items-center px-12 py-1 overflow-hidden text-lg font-medium text-white dark:text-white border-2 rounded-full group w-full justify-center disabled:text-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed"
                 >
                   <span className="absolute left-0 block w-full transition-all bg-[#af4261] opacity-100 h-full top-0"></span>

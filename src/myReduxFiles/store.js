@@ -4,6 +4,7 @@ import {
   countryStateCityReducer,
   emailReducer,
   guestDataReducer,
+  itemsInCartDuplicateReducer,
   userLoadingReducer,
 } from "./reducers";
 
@@ -14,5 +15,6 @@ export const store = configureStore({
     guestData: guestDataReducer,
     email: emailReducer,
     userLoading: userLoadingReducer,
+    itemsInCartDuplicate: itemsInCartDuplicateReducer,
   },
 });

@@ -4,6 +4,7 @@ import {
   countryStateCityAction,
   emailAction,
   guestDataAction,
+  itemsInCartDuplicateAction,
   userLoadingAction,
 } from "./actions";
 
@@ -40,6 +41,13 @@ export const emailReducer = createReducer("", (builder) => {
 
 export const userLoadingReducer = createReducer(true, (builder) => {
   builder.addCase(userLoadingAction, (state, action) => {
+    const { payload } = action;
+    return payload;
+  });
+});
+
+export const itemsInCartDuplicateReducer = createReducer([], (builder) => {
+  builder.addCase(itemsInCartDuplicateAction, (state, action) => {
     const { payload } = action;
     return payload;
   });

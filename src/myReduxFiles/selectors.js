@@ -7,3 +7,6 @@ export const guestDataSelector = (state) => state.guestData;
 export const emailSelector = (state) => state.email;
 
 export const userLoadingSelector = (state) => state.userLoading;
+
+export const itemsInCartDuplicateSelector = (state) =>
+  state.itemsInCartDuplicate;
