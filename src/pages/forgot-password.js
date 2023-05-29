@@ -1,4 +1,4 @@
-import { Loader } from "@/util/Loader";
+import { Loader } from "@/pages/Loader";
 import { forgotPassword } from "@/util/awsFuntions";
 import Link from "next/link";
 import { useEffect, useState } from "react";

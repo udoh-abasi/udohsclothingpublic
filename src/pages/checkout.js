@@ -17,10 +17,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { CountryStateCity } from "./countryStateCity";
 import Link from "next/link";
 import { logIn } from "@/util/awsFuntions";
-import { Loader } from "@/util/Loader";
+import { Loader } from "@/pages/Loader";
 import { useRouter } from "next/router";
 import { IoMdCheckmarkCircle } from "react-icons/io";
-import { guestDataAction } from "@/myReduxFiles/actions";
+import { emailAction, guestDataAction } from "@/myReduxFiles/actions";
 import { CartItemsToDisplayByTheSide } from "./CartItemsToDisplayByTheSide";
 import { SignUpWithGoogle } from "./SignupWithGoogle";
 import { useUser } from "@/customHooks/useUser";
@@ -66,6 +66,7 @@ export const CheckOutPage = () => {
   const verifyGuestCode = () => {
     if (guestVerificationCode === guestCodeInEmailSent) {
       setGuestVerificationStatus("success");
+      // dispatch(emailAction(guestEmail));
     } else {
       setGuestErrorWithCodeVerification(
         "The code is different from what we have in our database. Please check and try again"
@@ -135,6 +136,7 @@ export const CheckOutPage = () => {
   // When the 'NEXT' button is clicked, this function executes (on Form Submit)
   const NextButtonClicked = (guestData) => {
     dispatch(guestDataAction(guestData));
+    router.push("/payment-and-summary?status=guest");
   };
 
   return (

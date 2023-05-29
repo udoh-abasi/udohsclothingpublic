@@ -1,4 +1,8 @@
-import { cartSelector } from "@/myReduxFiles/selectors";
+import {
+  cartSelector,
+  emailSelector,
+  guestDataSelector,
+} from "@/myReduxFiles/selectors";
 import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa";
 import { FaWindowClose } from "react-icons/fa";
@@ -8,6 +12,7 @@ import { addOrRemoveClassToBody } from "@/util/addOrRemoveClassToBody";
 import { useDispatch, useSelector } from "react-redux";
 import { cartAction } from "@/myReduxFiles/actions";
 import { useRouter } from "next/router";
+import { useUser } from "@/customHooks/useUser";
 
 export const Cart = ({
   setOverLayForCart,
@@ -28,6 +33,10 @@ export const Cart = ({
 
   const dispatch = useDispatch();
   const router = useRouter();
+  const user = useUser();
+
+  const guestInfo = useSelector(guestDataSelector);
+  const email = useSelector(emailSelector);
 
   return (
     <section
@@ -216,7 +225,13 @@ export const Cart = ({
             setOverLayForCartOnBigScreen(false);
             addOrRemoveClassToBody();
 
-            router.push("/checkout");
+            if (guestInfo) {
+              router.push("/payment-and-summary?status=guest");
+            } else if (email) {
+              router.push("/payment-and-summary");
+            } else {
+              router.push("/checkout");
+            }
 
             setTimeout(() => {
               theCart.classList.toggle("hidden");

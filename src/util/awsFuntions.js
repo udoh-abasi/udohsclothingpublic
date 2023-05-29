@@ -124,9 +124,10 @@ export const logIn = async (
 };
 
 // SIGN OUT
-export const signOut = async () => {
+export const signOut = async (router) => {
   try {
     await Auth.signOut();
+    router.push("/checkout");
   } catch (e) {
     console.log("Error Signing out", e);
   }

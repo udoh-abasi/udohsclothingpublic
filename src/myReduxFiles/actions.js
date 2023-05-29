@@ -14,3 +14,11 @@ export const countryStateCityAction = createAction(
 export const guestDataAction = createAction("guestData", (guestData) => {
   return { payload: guestData };
 });
+
+export const emailAction = createAction("email", (email) => {
+  return { payload: email };
+});
+
+export const userLoadingAction = createAction("userLoading", (userLoading) => {
+  return { payload: userLoading };
+});

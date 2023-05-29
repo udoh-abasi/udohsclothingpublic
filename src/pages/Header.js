@@ -8,15 +8,16 @@ import { useEffect, useState } from "react";
 import { addOrRemoveClassToBody } from "@/util/addOrRemoveClassToBody";
 import { OverLayforBlurringScreen } from "@/util/OverLayforBluringScreen";
 import Link from "next/link";
-import { cartSelector } from "@/myReduxFiles/selectors";
+import { cartSelector, emailSelector } from "@/myReduxFiles/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { cartAction } from "@/myReduxFiles/actions";
 import { Cart } from "./cart";
 import { getNumberOfEachItemInCart } from "@/util/getNumberOfEachItemInCart";
 import { IoIosMan, IoIosWoman } from "react-icons/io";
-import { useUser } from "@/customHooks/useUser";
+
 import { useRouter } from "next/router";
 import { signOut } from "@/util/awsFuntions";
+import { useUser } from "@/customHooks/useUser";
 
 export const Header = () => {
   const [mobileScreenMenu, setMobileScreenMenu] = useState(false);
@@ -67,8 +68,30 @@ export const Header = () => {
     listenToWhenNewNavIsReturned();
   }, [mediumScreenAndAbove]);
 
-  const user = useUser();
+  // This useEffect adds an event listener that closes the <nav> (for mobile device), and the cart, when the 'esc' key on keyboard is pressed
+  useEffect(() => {
+    const closeNavAndCartOnEscapeKeyPress = () => {
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          listenToWhenNewNavIsReturned();
+        }
+      });
+
+      return document.removeEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          listenToWhenNewNavIsReturned();
+        }
+      });
+    };
+
+    closeNavAndCartOnEscapeKeyPress();
+  }, []);
+
   const router = useRouter();
+
+  const user = useUser();
+
+  const email = useSelector(emailSelector);
 
   return (
     <>
@@ -182,15 +205,15 @@ export const Header = () => {
                   />
 
                   <li className="px-4 relative group" tabIndex={0}>
-                    <div className="hidden group-hover:block group-focus-within:block absolute p-1 rounded-xl bg-white text-black border-black dark:border-white top-12 right-0">
-                      {true ? (
+                    <div className="hidden group-hover:block group-focus-within:block absolute p-1 rounded-xl bg-white text-black border-black dark:border-white top-9 right-0">
+                      {email ? (
                         <>
                           <p className="text-xs break-words w-[60px] mb-2">
-                            udoh.abasi@gmail.com
+                            {email}
                           </p>
                           <button
                             type="button"
-                            onClick={() => signOut()}
+                            onClick={() => signOut(router)}
                             className="block border-2 w-[60px] rounded-xl leading-5 font-bold bg-black text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms] text-[0.7rem]"
                           >
                             Sign Out
@@ -443,14 +466,14 @@ export const Header = () => {
               </li>
               <li className="relative group" tabIndex={0}>
                 <div className="hidden group-hover:block group-focus-within:block absolute p-1 rounded-xl bg-white text-black border-black dark:border-white top-12 right-0">
-                  {true ? (
+                  {email ? (
                     <>
                       <p className="text-xs break-words w-[60px] mb-2">
-                        udoh.abasi@gmail.com
+                        {email}
                       </p>
                       <button
                         type="button"
-                        onClick={() => signOut()}
+                        onClick={() => signOut(router)}
                         className="block border-2 w-[60px] rounded-xl leading-5 font-bold bg-black text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms] text-[0.7rem]"
                       >
                         Sign Out

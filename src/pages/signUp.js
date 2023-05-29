@@ -1,7 +1,10 @@
 import { useSelector } from "react-redux";
 import { CountryStateCity } from "./countryStateCity";
 import Link from "next/link";
-import { countryStateCitySelector } from "@/myReduxFiles/selectors";
+import {
+  countryStateCitySelector,
+  emailSelector,
+} from "@/myReduxFiles/selectors";
 import {
   AiFillCloseCircle,
   AiFillEye,
@@ -16,7 +19,7 @@ import {
   signUp,
 } from "@/util/awsFuntions";
 import { useUser } from "@/customHooks/useUser";
-import { Loader } from "@/util/Loader";
+import { Loader } from "@/pages/Loader";
 import { useRouter } from "next/router";
 import { SignUpWithGoogle } from "./SignupWithGoogle";
 
@@ -122,8 +125,6 @@ const SignUp = () => {
     }
   }, [confirmPassword, password]);
 
-  const user = useUser();
-
   const router = useRouter();
 
   const addNewUser = async (theData) => {
@@ -138,7 +139,7 @@ const SignUp = () => {
       });
 
       if (response.ok) {
-        router.push("/checkout");
+        router.push("/payment-and-summary");
       } else {
         setAddNewUserToDBError(
           "There was a problem adding your info to the database"
@@ -150,6 +151,23 @@ const SignUp = () => {
       setAddNewUserToDBIsLoading(false);
     }
   };
+
+  const emailInRedux = useSelector(emailSelector);
+
+  // This useEffect checks the /signUp URL, if an email was sent as a query parameter.
+  // This can happen if the user has NOT submitted their details in our database during signUp, or if they signed in via Google.
+  useEffect(() => {
+    if (router.isReady) {
+      const { query } = router;
+      const { email } = query;
+
+      if (email && email === emailInRedux) {
+        setEmail(email);
+        setShowVerificationCodeField("successful");
+        setShowSignUpField(false);
+      }
+    }
+  }, [router, emailInRedux]);
 
   return (
     <div className="p-4 flex justify-center">
@@ -502,7 +520,7 @@ const SignUp = () => {
                 e.preventDefault();
 
                 const dbData = {
-                  user,
+                  user: email,
                   data: {
                     name,
                     phoneNumber,
