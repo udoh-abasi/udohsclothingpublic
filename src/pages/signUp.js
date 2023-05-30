@@ -22,6 +22,7 @@ import { useUser } from "@/customHooks/useUser";
 import { Loader } from "@/pages/Loader";
 import { useRouter } from "next/router";
 import { SignUpWithGoogle } from "./SignupWithGoogle";
+import Head from "next/head";
 
 const SignUp = () => {
   const countryStateCity = useSelector(countryStateCitySelector);
@@ -170,469 +171,482 @@ const SignUp = () => {
   }, [router, emailInRedux]);
 
   return (
-    <div className="p-4 flex justify-center">
-      <section className="bg-[#af4261] rounded-2xl shadow-[0px_5px_15px_rgba(0,0,0,0.35)] min-[650px]:m-8 max-w-[850px] w-[90%]">
-        <h1 className="text-center my-8 text-2xl font-bold text-white">
-          Sign Up
-        </h1>
+    <>
+      <Head>
+        <title>Sign Up - Udohs</title>
+      </Head>
 
-        <div
-          className="bg-white text-black py-16 rounded-2xl p-2 min-[490px]:px-8"
-          id="signWrapper"
-        >
-          {showSignUpField && (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                signUp(
-                  email,
-                  password,
-                  setErrorMessage,
-                  setShowVerificationCodeField,
-                  setSignedUpUserEmail,
-                  setHideError,
-                  setSignUpLoading
-                );
-              }}
-            >
-              <div
-                className={`text-center text-red-600 font-bold mt-[-20px] pb-8 px-3 relative ${
-                  hideError && "hidden"
-                }`}
+      <div className="p-4 flex justify-center">
+        <section className="bg-[#af4261] rounded-2xl shadow-[0px_5px_15px_rgba(0,0,0,0.35)] min-[650px]:m-8 max-w-[850px] w-[90%]">
+          <h1 className="text-center my-8 text-2xl font-bold text-white">
+            Sign Up
+          </h1>
+
+          <div
+            className="bg-white text-black py-16 rounded-2xl p-2 min-[490px]:px-8"
+            id="signWrapper"
+          >
+            {showSignUpField && (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  signUp(
+                    email,
+                    password,
+                    setErrorMessage,
+                    setShowVerificationCodeField,
+                    setSignedUpUserEmail,
+                    setHideError,
+                    setSignUpLoading
+                  );
+                }}
               >
-                {errorMessage}
-                <div onClick={() => setHideError(true)}>
-                  <AiFillCloseCircle className="absolute top-[-10px] right-4 cursor-pointer text-xl text-red-600" />
-                </div>
-              </div>
-
-              <div className="mb-8 relative">
-                <input
-                  id="loginEmail"
-                  type="email"
-                  required
-                  placeholder=" "
-                  value={email}
-                  className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                />
-
-                <label
-                  htmlFor="loginEmail"
-                  className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
+                <div
+                  className={`text-center text-red-600 font-bold mt-[-20px] pb-8 px-3 relative ${
+                    hideError && "hidden"
+                  }`}
                 >
-                  Email
-                </label>
-              </div>
+                  {errorMessage}
+                  <div onClick={() => setHideError(true)}>
+                    <AiFillCloseCircle className="absolute top-[-10px] right-4 cursor-pointer text-xl text-red-600" />
+                  </div>
+                </div>
 
-              <div className="mb-8">
-                <div className="relative">
+                <div className="mb-8 relative">
                   <input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
+                    id="loginEmail"
+                    type="email"
                     required
                     placeholder=" "
-                    value={password}
-                    onFocus={() => setShowPasswordHelper(true)}
-                    onBlur={() => setShowPasswordHelper(false)}
-                    onChange={(e) => passwordRegularExpressionCheck(e)}
-                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$"
+                    value={email}
+                    className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
+                  />
+
+                  <label
+                    htmlFor="loginEmail"
+                    className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
+                  >
+                    Email
+                  </label>
+                </div>
+
+                <div className="mb-8">
+                  <div className="relative">
+                    <input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      required
+                      placeholder=" "
+                      value={password}
+                      onFocus={() => setShowPasswordHelper(true)}
+                      onBlur={() => setShowPasswordHelper(false)}
+                      onChange={(e) => passwordRegularExpressionCheck(e)}
+                      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$"
+                      className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
+                    />
+
+                    <button
+                      type="button"
+                      className="absolute top-1 right-0 cursor-pointer text-3xl"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                    </button>
+
+                    <label
+                      htmlFor="password"
+                      className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
+                    >
+                      Password
+                    </label>
+                  </div>
+
+                  {showPasswordHelper && (
+                    <ul className="pl-8 text-red-500 py-2 text-sm">
+                      <li
+                        className={`${
+                          passwordHasUppercase && "text-green-500"
+                        } flex items-center`}
+                      >
+                        <span className="mr-2">
+                          At least one uppercase letter
+                        </span>
+
+                        <span>
+                          {passwordHasUppercase ? (
+                            <IoIosCheckmark className="text-2xl" />
+                          ) : (
+                            <AiOutlineCloseCircle />
+                          )}
+                        </span>
+                      </li>
+
+                      <li
+                        className={`${
+                          passwordHasLowercase && "text-green-500"
+                        } flex items-center`}
+                      >
+                        <span className="mr-2">
+                          At least one lowercase letter
+                        </span>
+
+                        <span>
+                          {passwordHasLowercase ? (
+                            <IoIosCheckmark className="text-2xl" />
+                          ) : (
+                            <AiOutlineCloseCircle />
+                          )}
+                        </span>
+                      </li>
+
+                      <li
+                        className={`${
+                          passwordHasNumber && "text-green-500"
+                        } flex items-center`}
+                      >
+                        <span className="mr-2">At least one digit</span>
+
+                        <span>
+                          {passwordHasNumber ? (
+                            <IoIosCheckmark className="text-2xl" />
+                          ) : (
+                            <AiOutlineCloseCircle />
+                          )}
+                        </span>
+                      </li>
+
+                      <li
+                        className={`${
+                          passwordHasCharacter && "text-green-500"
+                        } flex items-center`}
+                      >
+                        <span className="mr-2">
+                          At least one special character
+                        </span>
+
+                        <span>
+                          {passwordHasCharacter ? (
+                            <IoIosCheckmark className="text-2xl" />
+                          ) : (
+                            <AiOutlineCloseCircle />
+                          )}
+                        </span>
+                      </li>
+
+                      <li
+                        className={`${
+                          passwordIsEightDigit && "text-green-500"
+                        } flex items-center`}
+                      >
+                        <span className="mr-2">At least 8 characters long</span>
+
+                        <span>
+                          {passwordIsEightDigit ? (
+                            <IoIosCheckmark className="text-2xl" />
+                          ) : (
+                            <AiOutlineCloseCircle />
+                          )}
+                        </span>
+                      </li>
+                    </ul>
+                  )}
+                </div>
+
+                <div className="mb-2 relative">
+                  <input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    required
+                    placeholder=" "
+                    value={confirmPassword}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                    }}
+                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#-+=_])[A-Za-z\d@$!%*?&]{8,}$"
                     className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
                   />
 
                   <button
                     type="button"
                     className="absolute top-1 right-0 cursor-pointer text-3xl"
-                    onClick={() => setShowPassword(!showPassword)}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
-                    {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                    {showConfirmPassword ? (
+                      <AiFillEyeInvisible />
+                    ) : (
+                      <AiFillEye />
+                    )}
                   </button>
 
                   <label
-                    htmlFor="password"
+                    htmlFor="confirmPassword"
                     className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
                   >
-                    Password
+                    Confirm Password
                   </label>
                 </div>
 
-                {showPasswordHelper && (
-                  <ul className="pl-8 text-red-500 py-2 text-sm">
-                    <li
-                      className={`${
-                        passwordHasUppercase && "text-green-500"
-                      } flex items-center`}
-                    >
-                      <span className="mr-2">
-                        At least one uppercase letter
-                      </span>
-
-                      <span>
-                        {passwordHasUppercase ? (
-                          <IoIosCheckmark className="text-2xl" />
-                        ) : (
-                          <AiOutlineCloseCircle />
-                        )}
-                      </span>
-                    </li>
-
-                    <li
-                      className={`${
-                        passwordHasLowercase && "text-green-500"
-                      } flex items-center`}
-                    >
-                      <span className="mr-2">
-                        At least one lowercase letter
-                      </span>
-
-                      <span>
-                        {passwordHasLowercase ? (
-                          <IoIosCheckmark className="text-2xl" />
-                        ) : (
-                          <AiOutlineCloseCircle />
-                        )}
-                      </span>
-                    </li>
-
-                    <li
-                      className={`${
-                        passwordHasNumber && "text-green-500"
-                      } flex items-center`}
-                    >
-                      <span className="mr-2">At least one digit</span>
-
-                      <span>
-                        {passwordHasNumber ? (
-                          <IoIosCheckmark className="text-2xl" />
-                        ) : (
-                          <AiOutlineCloseCircle />
-                        )}
-                      </span>
-                    </li>
-
-                    <li
-                      className={`${
-                        passwordHasCharacter && "text-green-500"
-                      } flex items-center`}
-                    >
-                      <span className="mr-2">
-                        At least one special character
-                      </span>
-
-                      <span>
-                        {passwordHasCharacter ? (
-                          <IoIosCheckmark className="text-2xl" />
-                        ) : (
-                          <AiOutlineCloseCircle />
-                        )}
-                      </span>
-                    </li>
-
-                    <li
-                      className={`${
-                        passwordIsEightDigit && "text-green-500"
-                      } flex items-center`}
-                    >
-                      <span className="mr-2">At least 8 characters long</span>
-
-                      <span>
-                        {passwordIsEightDigit ? (
-                          <IoIosCheckmark className="text-2xl" />
-                        ) : (
-                          <AiOutlineCloseCircle />
-                        )}
-                      </span>
-                    </li>
-                  </ul>
-                )}
-              </div>
-
-              <div className="mb-2 relative">
-                <input
-                  id="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  required
-                  placeholder=" "
-                  value={confirmPassword}
-                  onChange={(e) => {
-                    setConfirmPassword(e.target.value);
-                  }}
-                  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#-+=_])[A-Za-z\d@$!%*?&]{8,}$"
-                  className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
-                />
-
-                <button
-                  type="button"
-                  className="absolute top-1 right-0 cursor-pointer text-3xl"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
-                </button>
-
-                <label
-                  htmlFor="confirmPassword"
-                  className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
-                >
-                  Confirm Password
-                </label>
-              </div>
-
-              {!passwordMatch && (
-                <p className="pl-8 text-sm text-red-500">Password must match</p>
-              )}
-
-              <button
-                type="submit"
-                className="my-6 text-center border-2 w-full py-2 rounded-full font-bold bg-[#af4261] text-white hover:bg-black hover:text-white transition-all ease-linear duration-[300ms] disabled:text-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed"
-                disabled={!password || !email || password !== confirmPassword}
-              >
-                {signUpLoading && (
-                  <Loader
-                    textColor={"text-white"}
-                    fillColor={"fill-blue-500"}
-                  />
-                )}
-
-                {!signUpLoading && <span>Sign Up</span>}
-              </button>
-
-              <Link href="/checkout" className="text-center block underline">
-                Already have an account&#x3f; Login
-              </Link>
-
-              <SignUpWithGoogle />
-            </form>
-          )}
-
-          {showVerificationCodeField && (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                confirmSignUpCode(
-                  email,
-                  verificationCode,
-                  setShowVerificationCodeField,
-                  setCodeVerificationFailed,
-                  setShowSignUpField,
-                  setVerifyEmailCodeLoading
-                );
-              }}
-              className="pb-8 pt-3"
-            >
-              <fieldset className="border-2 border-black p-6 rounded-3xl">
-                <legend className="ml-3 px-1 font-bold">Verify Email</legend>
-
-                {showVerificationCodeField === true && (
-                  <div>
-                    {codeVerificationFailed && (
-                      <p className="text-center text-red-500 mb-4 font-bold text-sm">
-                        Verification failed, please check the code and try again
-                      </p>
-                    )}
-
-                    <p className="pb-8">
-                      To verify that this is your email, please enter the
-                      verification code sent to{" "}
-                      <span className="underline ">{signedUpUserEmail}</span>
-                    </p>
-
-                    <div className="mb-2 relative">
-                      <input
-                        id="verificationCode"
-                        type="text"
-                        required
-                        placeholder=" "
-                        autoFocus
-                        value={verificationCode}
-                        onChange={(e) => {
-                          setVerificationCode(e.target.value);
-                        }}
-                        className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
-                      />
-
-                      <label
-                        htmlFor="verificationCode"
-                        className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
-                      >
-                        Verification Code
-                      </label>
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="my-6 text-center border-2 w-full py-2 rounded-full font-bold bg-green-500 text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms] disabled:text-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed"
-                      disabled={!verificationCode}
-                    >
-                      {verifyEmailCodeLoading && (
-                        <Loader
-                          textColor={"text-white"}
-                          fillColor={"fill-black"}
-                        />
-                      )}
-
-                      {!verifyEmailCodeLoading && <span>Submit Code </span>}
-                    </button>
-
-                    <button
-                      type="button"
-                      className="text-center border-2 w-[150px] py-2 rounded-full font-bold bg-black text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms]"
-                      onClick={() => {
-                        resendSignUpConfirmationCode(
-                          email,
-                          setResendSignUpCodeLoading
-                        );
-                      }}
-                    >
-                      {resendSignUpCodeLoading === true && (
-                        <Loader
-                          textColor={"text-white"}
-                          fillColor={"fill-black"}
-                        />
-                      )}
-                      {resendSignUpCodeLoading === false && "Resend Code"}
-                      {resendSignUpCodeLoading === "successful" && (
-                        <span className="flex justify-center items-center">
-                          Code Sent{" "}
-                          <IoMdCheckmarkCircle className="ml-2 text-xl" />
-                        </span>
-                      )}
-                    </button>
-                  </div>
-                )}
-
-                {showVerificationCodeField === "successful" && (
-                  <p className="flex flex-col items-center text-center">
-                    <IoMdCheckmarkCircle className="text-6xl" color="green" />
-                    <span className="min-[580px]:text-2xl">
-                      Email Verified Successfully
-                    </span>
+                {!passwordMatch && (
+                  <p className="pl-8 text-sm text-red-500">
+                    Password must match
                   </p>
                 )}
-              </fieldset>
-            </form>
-          )}
 
-          {showVerificationCodeField === "successful" && (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-
-                const dbData = {
-                  user: email,
-                  data: {
-                    name,
-                    phoneNumber,
-                    streetAddress,
-                    ...countryStateCity,
-                  },
-                };
-
-                addNewUser(dbData);
-              }}
-            >
-              {addNewUserToDBError && (
-                <p className="text-red-500 mb-4 text-center">
-                  {addNewUserToDBError}
-                </p>
-              )}
-
-              <div className="mb-2 relative">
-                <input
-                  id="name"
-                  type="text"
-                  required
-                  placeholder=" "
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
-                />
-
-                <label
-                  htmlFor="name"
-                  className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
+                <button
+                  type="submit"
+                  className="my-6 text-center border-2 w-full py-2 rounded-full font-bold bg-[#af4261] text-white hover:bg-black hover:text-white transition-all ease-linear duration-[300ms] disabled:text-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed"
+                  disabled={!password || !email || password !== confirmPassword}
                 >
-                  Name
-                </label>
-              </div>
+                  {signUpLoading && (
+                    <Loader
+                      textColor={"text-white"}
+                      fillColor={"fill-blue-500"}
+                    />
+                  )}
 
-              <div className="mb-8">
-                <CountryStateCity />
-              </div>
+                  {!signUpLoading && <span>Sign Up</span>}
+                </button>
 
-              <div className="mb-8 relative">
-                <input
-                  id="streetAddress"
-                  type="text"
-                  required
-                  placeholder=" "
-                  value={streetAddress}
-                  onChange={(e) => setStreetAddress(e.target.value)}
-                  className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
-                />
+                <Link href="/checkout" className="text-center block underline">
+                  Already have an account&#x3f; Login
+                </Link>
 
-                <label
-                  htmlFor="streetAddress"
-                  className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
-                >
-                  Street Address
-                </label>
-              </div>
+                <SignUpWithGoogle />
+              </form>
+            )}
 
-              <div className="mb-8 relative">
-                <input
-                  id="phone"
-                  type="text"
-                  required
-                  placeholder=" "
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
-                />
-
-                <label
-                  htmlFor="phone"
-                  className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
-                >
-                  Phone Number
-                </label>
-              </div>
-
-              <button
-                type="submit"
-                className="relative flex items-center px-12 py-1 overflow-hidden text-lg font-medium text-white dark:text-white border-2 rounded-full group w-full justify-center disabled:text-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed"
-                disabled={!name || !phoneNumber || !streetAddress}
+            {showVerificationCodeField && (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  confirmSignUpCode(
+                    email,
+                    verificationCode,
+                    setShowVerificationCodeField,
+                    setCodeVerificationFailed,
+                    setShowSignUpField,
+                    setVerifyEmailCodeLoading
+                  );
+                }}
+                className="pb-8 pt-3"
               >
-                <span className="absolute left-0 block w-full transition-all bg-[#af4261] opacity-100 h-full top-0"></span>
-                <span className="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M14 5l7 7m0 0l-7 7m7-7H3"
-                    ></path>
-                  </svg>
-                </span>
+                <fieldset className="border-2 border-black p-6 rounded-3xl">
+                  <legend className="ml-3 px-1 font-bold">Verify Email</legend>
 
-                {addNewUserToDBIsLoading ? (
-                  <Loader textColor={"text-white"} fillColor={"fill-black"} />
-                ) : (
-                  <span className="relative">Submit</span>
+                  {showVerificationCodeField === true && (
+                    <div>
+                      {codeVerificationFailed && (
+                        <p className="text-center text-red-500 mb-4 font-bold text-sm">
+                          Verification failed, please check the code and try
+                          again
+                        </p>
+                      )}
+
+                      <p className="pb-8">
+                        To verify that this is your email, please enter the
+                        verification code sent to{" "}
+                        <span className="underline ">{signedUpUserEmail}</span>
+                      </p>
+
+                      <div className="mb-2 relative">
+                        <input
+                          id="verificationCode"
+                          type="text"
+                          required
+                          placeholder=" "
+                          autoFocus
+                          value={verificationCode}
+                          onChange={(e) => {
+                            setVerificationCode(e.target.value);
+                          }}
+                          className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
+                        />
+
+                        <label
+                          htmlFor="verificationCode"
+                          className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
+                        >
+                          Verification Code
+                        </label>
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="my-6 text-center border-2 w-full py-2 rounded-full font-bold bg-green-500 text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms] disabled:text-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed"
+                        disabled={!verificationCode}
+                      >
+                        {verifyEmailCodeLoading && (
+                          <Loader
+                            textColor={"text-white"}
+                            fillColor={"fill-black"}
+                          />
+                        )}
+
+                        {!verifyEmailCodeLoading && <span>Submit Code </span>}
+                      </button>
+
+                      <button
+                        type="button"
+                        className="text-center border-2 w-[150px] py-2 rounded-full font-bold bg-black text-white hover:bg-white hover:text-black transition-all ease-linear duration-[300ms]"
+                        onClick={() => {
+                          resendSignUpConfirmationCode(
+                            email,
+                            setResendSignUpCodeLoading
+                          );
+                        }}
+                      >
+                        {resendSignUpCodeLoading === true && (
+                          <Loader
+                            textColor={"text-white"}
+                            fillColor={"fill-black"}
+                          />
+                        )}
+                        {resendSignUpCodeLoading === false && "Resend Code"}
+                        {resendSignUpCodeLoading === "successful" && (
+                          <span className="flex justify-center items-center">
+                            Code Sent{" "}
+                            <IoMdCheckmarkCircle className="ml-2 text-xl" />
+                          </span>
+                        )}
+                      </button>
+                    </div>
+                  )}
+
+                  {showVerificationCodeField === "successful" && (
+                    <p className="flex flex-col items-center text-center">
+                      <IoMdCheckmarkCircle className="text-6xl" color="green" />
+                      <span className="min-[580px]:text-2xl">
+                        Email Verified Successfully
+                      </span>
+                    </p>
+                  )}
+                </fieldset>
+              </form>
+            )}
+
+            {showVerificationCodeField === "successful" && (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+
+                  const dbData = {
+                    user: email,
+                    data: {
+                      name,
+                      phoneNumber,
+                      streetAddress,
+                      ...countryStateCity,
+                    },
+                  };
+
+                  addNewUser(dbData);
+                }}
+              >
+                {addNewUserToDBError && (
+                  <p className="text-red-500 mb-4 text-center">
+                    {addNewUserToDBError}
+                  </p>
                 )}
-              </button>
-            </form>
-          )}
-        </div>
-      </section>
-    </div>
+
+                <div className="mb-2 relative">
+                  <input
+                    id="name"
+                    type="text"
+                    required
+                    placeholder=" "
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
+                  />
+
+                  <label
+                    htmlFor="name"
+                    className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
+                  >
+                    Name
+                  </label>
+                </div>
+
+                <div className="mb-8">
+                  <CountryStateCity />
+                </div>
+
+                <div className="mb-8 relative">
+                  <input
+                    id="streetAddress"
+                    type="text"
+                    required
+                    placeholder=" "
+                    value={streetAddress}
+                    onChange={(e) => setStreetAddress(e.target.value)}
+                    className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
+                  />
+
+                  <label
+                    htmlFor="streetAddress"
+                    className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
+                  >
+                    Street Address
+                  </label>
+                </div>
+
+                <div className="mb-8 relative">
+                  <input
+                    id="phone"
+                    type="text"
+                    required
+                    placeholder=" "
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="dark:text-black block w-full rounded-xl p-1 border-black border-2 peer"
+                  />
+
+                  <label
+                    htmlFor="phone"
+                    className="absolute peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-focus:top-[-60%] peer-focus:translate-y-[0] top-[-60%] left-[0.5rem] transition-all duration-500 ease-linear cursor-text"
+                  >
+                    Phone Number
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  className="relative flex items-center px-12 py-1 overflow-hidden text-lg font-medium text-white dark:text-white border-2 rounded-full group w-full justify-center disabled:text-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed"
+                  disabled={!name || !phoneNumber || !streetAddress}
+                >
+                  <span className="absolute left-0 block w-full transition-all bg-[#af4261] opacity-100 h-full top-0"></span>
+                  <span className="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      ></path>
+                    </svg>
+                  </span>
+
+                  {addNewUserToDBIsLoading ? (
+                    <Loader textColor={"text-white"} fillColor={"fill-black"} />
+                  ) : (
+                    <span className="relative">Submit</span>
+                  )}
+                </button>
+              </form>
+            )}
+          </div>
+        </section>
+      </div>
+    </>
   );
 };
 
