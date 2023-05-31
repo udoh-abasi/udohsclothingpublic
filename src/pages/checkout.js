@@ -20,10 +20,10 @@ import { logIn } from "@/util/awsFuntions";
 import { Loader } from "@/pages/Loader";
 import { useRouter } from "next/router";
 import { IoMdCheckmarkCircle } from "react-icons/io";
-import { emailAction, guestDataAction } from "@/myReduxFiles/actions";
+import { guestDataAction } from "@/myReduxFiles/actions";
 import { CartItemsToDisplayByTheSide } from "./CartItemsToDisplayByTheSide";
 import { SignUpWithGoogle } from "./SignupWithGoogle";
-import { useUser } from "@/customHooks/useUser";
+
 import Head from "next/head";
 
 export const CheckOutPage = () => {
