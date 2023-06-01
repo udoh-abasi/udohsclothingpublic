@@ -1,17 +1,58 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { AiFillInstagram, AiFillTwitterCircle } from "react-icons/ai";
 import { BsLinkedin } from "react-icons/bs";
 import { FaFacebook } from "react-icons/fa";
 import Head from "next/head";
+import { Loader } from "./Loader";
+import { IoMdCheckmarkCircle } from "react-icons/io";
 
 const Contact = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
 
-  const router = useRouter();
+  const [disAbleButton, setDisableButton] = useState(true);
+  const [responseMessage, setResponseMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setDisableButton(!email || !name || !message);
+  }, [email, name, message]);
+
+  const sendContactEmail = async () => {
+    setLoading(true);
+    setDisableButton(true);
+    setLoading(true);
+    const theBody = { from: email, name, message };
+    try {
+      const response = await fetch("/api/sendContactEmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(theBody),
+      });
+
+      if (response.ok) {
+        setResponseMessage("success");
+        setLoading(false);
+        setDisableButton(false);
+        setName("");
+        setEmail("");
+        setMessage("");
+      } else {
+        setResponseMessage("error");
+        setLoading(false);
+        setDisableButton(false);
+      }
+    } catch (e) {
+      console.log(e);
+      setLoading(false);
+      setResponseMessage("error");
+    }
+  };
 
   return (
     <>
@@ -39,7 +80,7 @@ const Contact = () => {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              router.push("/");
+              sendContactEmail();
             }}
             className="flex items-center justify-center"
           >
@@ -102,16 +143,35 @@ const Contact = () => {
                   </label>
                 </div>
 
+                <p className="mb-3 text-center font-bold">
+                  {responseMessage === "success" && (
+                    <span className="text-green-700 flex items-center justify-center">
+                      Message sent successfully
+                      <IoMdCheckmarkCircle className="text-2xl ml-1" />
+                    </span>
+                  )}
+                  {responseMessage === "error" && (
+                    <span className="text-red-600">
+                      Message sending failed. Please try again
+                    </span>
+                  )}
+                </p>
+
                 <button
                   type="submit"
-                  className="relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-blue-500 rounded-xl group"
+                  disabled={disAbleButton}
+                  className="relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-blue-500 rounded-xl group disabled:cursor-not-allowed disabled:opacity-[0.5]"
                 >
                   <span className="absolute top-0 right-0 inline-block w-4 h-4 transition-all duration-500 ease-in-out bg-blue-700 rounded group-hover:-mr-4 group-hover:-mt-4">
                     <span className="absolute top-0 right-0 w-5 h-5 rotate-45 translate-x-1/2 -translate-y-1/2 bg-white"></span>
                   </span>
                   <span className="absolute bottom-0 left-0 w-full h-full transition-all duration-500 ease-in-out delay-200 -translate-x-full translate-y-full bg-blue-600 rounded-2xl group-hover:mb-12 group-hover:translate-x-0"></span>
                   <span className="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-white">
-                    Send Message
+                    {loading ? (
+                      <Loader textColor="text-black" fillColor="fill-white" />
+                    ) : (
+                      <span>Send Message</span>
+                    )}
                   </span>
                 </button>
               </fieldset>
