@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { Loader } from "../Loader";
 
 export const ProductDisplayPage = () => {
   const [clothdata, setClothData] = useState(null);
@@ -42,6 +43,8 @@ export const ProductDisplayPage = () => {
           setError(true);
         }
       } catch (e) {
+        setLoading(false);
+        setError(true);
         console.log(e);
       }
     };
@@ -56,7 +59,11 @@ export const ProductDisplayPage = () => {
   }, [router.isReady, clothState, router]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        Loading... <Loader textColor="text-black" fillColor="fill-white" />
+      </div>
+    );
   } else if (error) {
     return <>Page does Not Exist</>;
   } else {
