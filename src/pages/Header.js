@@ -31,6 +31,12 @@ export const Header = () => {
 
   const dispatch = useDispatch();
 
+  const [searchForBigScreen, setSearchForBigScreen] = useState("");
+
+  const [searchForSmallScreen, setSearchForSmallScreen] = useState("");
+
+  const [showSearchOnSmallScreen, setShowSearchOnSmallScreen] = useState(false);
+
   const itemsInCart = useSelector(cartSelector);
 
   // On first load, this useEffect checks the localStorage and populates our redux store with the items in cart
@@ -74,6 +80,8 @@ export const Header = () => {
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           listenToWhenNewNavIsReturned();
+
+          document.activeElement.blur(); // This was added especially, to make the search box for mobile lose focus. It just makes the currently active element on the screen to lose focus
         }
       });
 
@@ -249,17 +257,28 @@ export const Header = () => {
                 </Link>
               </li>
               <li className=" relative w-[70%] rounded-3xl border-[3px] border-black">
-                <input
-                  type="search"
-                  placeholder="search..."
-                  className="dark:text-black rounded-3xl w-[100%]"
-                />
-                <button
-                  type="button"
-                  className="absolute text-2xl top-0 right-0 bottom-0"
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    router.push(`/search?searchTerm=${searchForBigScreen}`);
+                    setSearchForBigScreen("");
+                  }}
                 >
-                  <FaSearch color="black" />
-                </button>
+                  <input
+                    type="search"
+                    placeholder="search..."
+                    required
+                    className="dark:text-black rounded-3xl w-[100%]"
+                    value={searchForBigScreen}
+                    onChange={(e) => setSearchForBigScreen(e.target.value)}
+                  />
+                  <button
+                    type="submit"
+                    className="absolute text-2xl top-0 right-0 bottom-0"
+                  >
+                    <FaSearch color="black" />
+                  </button>
+                </form>
               </li>
               <li className="pl-4 w-[250px] flex justify-end ">
                 <Link
@@ -410,9 +429,55 @@ export const Header = () => {
             </>
 
             <ul className="flex items-center">
-              <button type="button" className="block py-3">
-                <FaSearch />
-              </button>
+              <div
+                onFocus={() => {
+                  setShowSearchOnSmallScreen(true);
+                }}
+                onBlur={() => {
+                  setShowSearchOnSmallScreen(false);
+                }}
+              >
+                <button type="button" className="block py-3">
+                  <FaSearch />
+                </button>
+
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    router.push(`/search?searchTerm=${searchForSmallScreen}`);
+                    setSearchForSmallScreen("");
+                    document.activeElement.blur();
+                  }}
+                  className={`fixed w-full left-0 ${
+                    showSearchOnSmallScreen ? "top-4" : "top-[-100px] "
+                  } z-[100] transition-all ease-linear duration-[300ms]`}
+                >
+                  <input
+                    type="search"
+                    placeholder="search..."
+                    required
+                    className="dark:text-black rounded-3xl w-[100%] text-sm h-[40px]"
+                    value={searchForSmallScreen}
+                    onChange={(e) => setSearchForSmallScreen(e.target.value)}
+                  />
+                  <button
+                    type="submit"
+                    className="absolute text-2xl top-0 right-0 bottom-0"
+                  >
+                    <FaSearch color="black" />
+                  </button>
+
+                  <button
+                    className=" absolute top-[-15px] right-2 text-xl"
+                    type="button"
+                    onClick={() => {
+                      setShowSearchOnSmallScreen(false);
+                    }}
+                  >
+                    <FaWindowClose />
+                  </button>
+                </form>
+              </div>
 
               <li className="relative">
                 <span className="absolute text-base bottom-6 left-8 bg-green-500 rounded-full w-6 h-6 text-center flex items-center justify-center z-[1] pointer-events-none">
